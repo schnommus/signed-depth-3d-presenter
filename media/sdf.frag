@@ -19,7 +19,7 @@ void main() {
 
 
     // do some anti-aliasing
-    //clr.a *= smoothstep(0.25, 0.75, mask);
+    clr.a *= smoothstep(0.25, 0.75, mask);
 
     if(clr.a < 0.1) {
         vec4 glowTexel = texture2D( texture, gl_TexCoord[0].xy - vec2(0.01, 0.01) ) ;
