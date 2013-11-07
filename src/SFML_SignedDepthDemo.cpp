@@ -25,8 +25,18 @@ std::vector<std::string> split(std::string &s, char delim) {
 struct glyph {
 	int id;
 	int x, y, w, h;
-	float off;
+	float off, xo, yo;
+	sf::Texture tex;
 };
+
+const glyph &glyphForCharacter( const std::vector< glyph* > &glyphs, char c ) {
+	for( int i = 0; i != glyphs.size(); ++i ) {
+		if( (char)glyphs[i]->id == c )
+			return *glyphs[i];
+	}
+	std::cout << "Invalid glyph referenced!" << std::endl;
+	return glyph();
+}
 
 int main()
 {
@@ -34,12 +44,15 @@ int main()
 	file.open("../media/sdf1.txt", std::ios::in );
 	std::string line;
 
-	std::vector< glyph > glyphs;
+	sf::Image fontImage; fontImage.loadFromFile("../media/sdf1.png");
+
+	std::vector< glyph* > glyphs;
 
 	while( getline (file, line) ) {
       std::vector< std::string > elements = split(line, ' ');
 	  if( elements[0] == "char" ) {
-		  glyph g;
+		  glyph *gp = new glyph;
+		  glyph &g = *gp;
 		  std::istringstream idstr(split( elements[1], '=' )[1]); idstr >> g.id;
 		  std::cout << "id: " << g.id  << " \'" << (char)g.id << "\', ";
 		  std::istringstream xstr(split( elements[2], '=' )[1]); xstr >> g.x;
@@ -50,22 +63,34 @@ int main()
 		  std::cout << "w: " << g.w << ", ";
 		  std::istringstream hstr(split( elements[5], '=' )[1]); hstr >> g.h;
 		  std::cout << "h: " << g.h  << ", ";
+		  std::istringstream xostr(split( elements[6], '=' )[1]); xostr >> g.xo;
+		  std::cout << "xo: " << g.xo  << ", ";
+		  std::istringstream yostr(split( elements[7], '=' )[1]); yostr >> g.yo;
+		  std::cout << "yo: " << g.yo  << ", ";
 		  std::istringstream offstr(split( elements[8], '=' )[1]); offstr >> g.off;
 		  std::cout << "off: " << g.off << std::endl;
-		  glyphs.push_back(g);
+		  g.tex.loadFromImage( fontImage, sf::IntRect(g.x, g.y, g.w, g.h) );
+		  g.tex.setSmooth(true);
+		  glyphs.push_back(&g);
 	  }
     }
 	file.close();
 
+	std::string testString("Hello, SDF fonts in SFML! :D");
+
+	std::vector< sf::Sprite > spriteString;
+
+	float off = 0.0f;
+	for( int i = 0; i != testString.size(); ++i ) {
+		const glyph &g = glyphForCharacter( glyphs, testString[i] );
+		sf::Sprite s( g.tex );
+		s.setPosition(off+g.xo, 300-g.yo);
+		spriteString.push_back( s );
+		off += g.off;
+	}
 	
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML_SignedDistance", sf::Style::Fullscreen);
     
-
-	sf::Texture sdf; sdf.loadFromFile("../media/sdf1.png");
-	sdf.setSmooth(true);
-	sf::Sprite sdfSprite(sdf);
-	sdfSprite.setOrigin(sdfSprite.getLocalBounds().width/2,sdfSprite.getLocalBounds().height/2);
-	sdfSprite.setPosition(window.getSize().x/2, window.getSize().y/2);
 
 	sf::Texture backgroundTex; backgroundTex.loadFromFile("../media/background.jpg");
 	sf::Sprite background(backgroundTex);
@@ -84,13 +109,15 @@ int main()
                 window.close();
         }
 
-		sdfSprite.setScale( 6+3*sin(delta.getElapsedTime().asSeconds()), 6+3*sin(delta.getElapsedTime().asSeconds()) );
-		sdfSprite.setRotation( delta.getElapsedTime().asSeconds()*45.0 );
-
 
         window.clear();
 		window.draw(background);
-        window.draw(sdfSprite, &sdfShader);
+
+		for( int i = 0; i != spriteString.size(); ++i ) {
+			spriteString[i].setScale( 1.0+0.1*sin(delta.getElapsedTime().asSeconds()+(float)i/4.0), 1.0+0.1*sin(delta.getElapsedTime().asSeconds()+(float)i/4.0) );
+			window.draw(spriteString[i], &sdfShader);
+		}
+
         window.display();
     }
 
