@@ -11,7 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\SDFontReader.cpp" />
     <ClCompile Include="..\src\SFML_SignedDepthDemo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\SDFontReader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C113BE27-77BB-4BAC-BF0A-AD7149E702F3}</ProjectGuid>
