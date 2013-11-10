@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/OpenGL.hpp>
 
 #include <fstream>
 #include <iostream>
@@ -23,19 +24,54 @@ int main()
 	sf::Texture texttex; texttex.loadFromImage( textimg ); texttex.setSmooth(true);
 	sf::Sprite text(texttex);
 	text.setOrigin( text.getGlobalBounds().width/2, text.getGlobalBounds().height/2);
-	text.setPosition(960, 240);
+	text.setPosition(960, 540);
 
-	sf::Font oldFont; oldFont.loadFromFile("../media/delicious-bold.otf");
-	sf::Text oldtext( sf::String("NormalText"), oldFont, 100 );
-	oldtext.setOrigin( oldtext.getGlobalBounds().width/2, oldtext.getGlobalBounds().height/2 );
-	oldtext.setPosition(960, 440);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glDepthMask(GL_TRUE);
+	glClearDepth(1.f);
 
-	sf::Text oldtext2( sf::String("AlphaTest"), oldFont, 100 );
-	oldtext2.setOrigin( oldtext2.getGlobalBounds().width/2, oldtext2.getGlobalBounds().height/2 );
-	oldtext2.setPosition(960, 690);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_CULL_FACE);
+
+	// Configure the viewport (the same size as the window)
+    glViewport(0, 0, window.getSize().x, window.getSize().y);
+
+    // Setup a perspective projection
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    GLfloat ratio = static_cast<float>(window.getSize().x) / window.getSize().y;
+    glFrustum(-ratio, ratio, -1.f, 1.f, 1.f, 500.f);
 
 
-	sf::Clock delta;
+	glEnable(GL_TEXTURE_2D);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	sf::Texture::bind(&texttex);
+
+	float sz_x = texttex.getSize().x/4;
+	float sz_y = texttex.getSize().y/4;
+	GLfloat cube[] =
+    {
+        // position, texture coordinates
+        0, -sz_x, -sz_y,  0, 0,
+        0,  sz_x, -sz_y,  1, 0,
+        0, -sz_x,  sz_y,  0, 1,
+        0, -sz_x,  sz_y,  0, 1,
+        0,  sz_x, -sz_y,  1, 0,
+        0,  sz_x,  sz_y,  1, 1,
+    };
+
+	 // Enable position and texture coordinates vertex components
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 5 * sizeof(GLfloat), cube);
+    glTexCoordPointer(2, GL_FLOAT, 5 * sizeof(GLfloat), cube + 3);
+
+    // Disable normal and color vertex components
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+
+	sf::Clock clock;
 
     while (window.isOpen())
     {
@@ -44,18 +80,41 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
+                window.close();
+
+            if (event.type == sf::Event::Resized)
+                glViewport(0, 0, event.size.width, event.size.height);
         }
 
-		text.setScale(6+5*sin(delta.getElapsedTime().asSeconds()),6+5*sin(delta.getElapsedTime().asSeconds()));
-		oldtext.setScale(6+5*sin(delta.getElapsedTime().asSeconds()),6+5*sin(delta.getElapsedTime().asSeconds()));
-		oldtext2.setScale(6+5*sin(delta.getElapsedTime().asSeconds()),6+5*sin(delta.getElapsedTime().asSeconds()));
+		window.pushGLStates();
+			window.clear();
+			window.draw(background);
+		window.popGLStates();
 
-        window.clear();
-		window.draw(background);
 
-		window.draw(text, &sdfShader);
-		window.draw(oldtext);
-		window.draw(oldtext2, &sdfShader);
+		// Clear the depth buffer
+        glClear(GL_DEPTH_BUFFER_BIT);
+
+        // We get the position of the mouse cursor, so that we can move the box accordingly
+        float x =  sf::Mouse::getPosition(window).x * 200.f / window.getSize().x - 100.f;
+        float y = -sf::Mouse::getPosition(window).y * 200.f / window.getSize().y + 100.f;
+
+        // Apply some transformations
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glTranslatef(x, y, -150.f);
+        glRotatef(clock.getElapsedTime().asSeconds() * 50.f, 1.f, 0.f, 0.f);
+        glRotatef(clock.getElapsedTime().asSeconds() * 30.f, 0.f, 1.f, 0.f);
+        glRotatef(clock.getElapsedTime().asSeconds() * 90.f, 0.f, 0.f, 1.f);
+
+		sf::Shader::bind( &sdfShader );
+
+        // Draw the cube
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		sf::Shader::bind( 0 );
 
         window.display();
     }
