@@ -14,6 +14,7 @@ struct glyph {
 	int x, y, w, h;
 	float off, xo, yo;
 	sf::Image img;
+	sf::Texture tex;
 };
 
 class SDFontReader {
