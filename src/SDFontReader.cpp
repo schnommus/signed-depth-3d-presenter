@@ -106,6 +106,7 @@ void SDFontReader::BuildGlyphs() {
 
 		  g.img.create(g.w, g.h);
 		  g.img.copy(fontImage, 0, 0, sf::IntRect(g.x, g.y, g.w, g.h) );
+		  g.tex.loadFromImage(g.img);
 
 		  glyphs.push_back(&g);
 	  }

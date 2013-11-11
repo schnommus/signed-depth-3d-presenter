@@ -28,6 +28,9 @@ void main() {
             clr = glowc;
     }
 
+    if(clr.a < 0.1)
+        discard;
+
     // final color
     gl_FragColor = clr; 
 }
