@@ -13,6 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="tweenlib">
+      <UniqueIdentifier>{26be3289-5ffc-4536-8d7c-3450cd11853c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tweenlib\impl">
+      <UniqueIdentifier>{fa889fde-5c9d-4075-b74a-79268774dad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tweenlib\impl\easing">
+      <UniqueIdentifier>{230cc84c-e50e-4edb-9076-cb4ca2e2d654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tweenlib\header">
+      <UniqueIdentifier>{8f69d851-3eb3-4551-9dea-e84040488b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tweenlib\header\easing">
+      <UniqueIdentifier>{2015f343-5171-4e18-9582-b4b8a700f698}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SFML_SignedDepthDemo.cpp">
@@ -24,6 +39,57 @@
     <ClCompile Include="..\src\String3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_back.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_bounce.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_circ.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_cubic.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_elastic.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_expo.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_linear.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_none.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_quad.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_quart.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_quint.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\easing\easing_sine.cpp">
+      <Filter>tweenlib\impl\easing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\base_tweener.cpp">
+      <Filter>tweenlib\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\tweener_sequence.cpp">
+      <Filter>tweenlib\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\single_tweener.cpp">
+      <Filter>tweenlib\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\tweener.cpp">
+      <Filter>tweenlib\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tween\tweener_group.cpp">
+      <Filter>tweenlib\impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\SDFontReader.h">
@@ -32,5 +98,64 @@
     <ClInclude Include="..\src\String3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_back.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\symmetric_easing.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_bounce.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_circ.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_cubic.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_elastic.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_expo.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_linear.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_none.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_quad.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_quart.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_quint.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\easing\easing_sine.hpp">
+      <Filter>tweenlib\header\easing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\base_tweener.hpp">
+      <Filter>tweenlib\header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\single_tweener.hpp">
+      <Filter>tweenlib\header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\tweener.hpp">
+      <Filter>tweenlib\header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\tweener_group.hpp">
+      <Filter>tweenlib\header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tween\tweener_sequence.hpp">
+      <Filter>tweenlib\header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\tween\easing\impl\symmetric_easing.tpp">
+      <Filter>tweenlib</Filter>
+    </None>
   </ItemGroup>
 </Project>
