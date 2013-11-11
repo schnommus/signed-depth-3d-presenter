@@ -1,4 +1,5 @@
 uniform sampler2D texture;
+uniform vec4 finalcolour;
 
 void main() {
     // retrieve distance from texture
@@ -6,7 +7,7 @@ void main() {
 
     // use current drawing color
     vec4 clr;
-    clr.rgb = vec3(1.0,1.0,1.0);
+    clr.rgb = finalcolour.rgb;
     // perform simple thresholding
     if( mask < 0.5 )  
         clr.a = 0.0;
@@ -14,7 +15,7 @@ void main() {
         /*if (mask < 0.9) { // Outline effect
             clr.rgb = vec3(1.0,0.0,1.0);
         }*/
-        clr.a = 1.0;
+        clr.a = finalcolour.a;
     }
 
 
@@ -28,7 +29,7 @@ void main() {
             clr = glowc;
     }
 
-    if(clr.a < 0.1)
+    if(clr.a < 0.05)
         discard;
 
     // final color

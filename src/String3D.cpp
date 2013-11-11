@@ -6,6 +6,8 @@ String3D::String3D( std::string string, SDFontReader &font, sf::Vector3f positio
 	this->position = position;
 	this->rotation = rotation;
 
+	this->colour = sf::Color::White;
+
 	contents = string;
 	img = font.ImageForString(contents);
 	tex.loadFromImage( img );
@@ -14,6 +16,8 @@ String3D::String3D( std::string string, SDFontReader &font, sf::Vector3f positio
 }
 
 void String3D::Draw( sf::RenderTarget &target, sf::Shader &shader ) {
+	shader.setParameter("finalcolour", this->colour);
+
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

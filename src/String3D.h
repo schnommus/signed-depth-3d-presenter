@@ -13,6 +13,7 @@ public:
 
 	sf::Vector3f position;
 	sf::Vector3f rotation;
+	sf::Color colour;
 private:
 	std::string contents;
 	SDFontReader &fontReader;
