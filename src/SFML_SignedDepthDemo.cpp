@@ -11,6 +11,7 @@
 
 #include "tween\single_tweener.hpp"
 #include "tween\easing\easing_elastic.hpp"
+#include "tween\easing\easing_quad.hpp"
 #include "tween\easing\easing_sine.hpp"
 
 int main()
@@ -28,10 +29,14 @@ int main()
 	sf::Shader sdfShader;
 	sdfShader.loadFromFile("../media/sdf.frag", sf::Shader::Fragment);
 
-	String3D text1("Front", thefont, sf::Vector3f(0, 0, 100), sf::Vector3f(0, 0, 0) );
-	String3D text2("Back", thefont, sf::Vector3f(0, 0, -100), sf::Vector3f(0, 180, 0) );
-	String3D text3("Left", thefont, sf::Vector3f(-100, 0, 0), sf::Vector3f(0, -90, 0) );
-	String3D text4("Right", thefont, sf::Vector3f(100, 0, 0), sf::Vector3f(0, 90, 0) );
+	String3D elements[] = { String3D("OpenGL", thefont, sf::Vector3f(0, 0, 90), sf::Vector3f(0, 0, 0) ),
+							String3D("SDFonts", thefont, sf::Vector3f(90, 0, 0), sf::Vector3f(0, 90, 0) ),
+							String3D("And", thefont, sf::Vector3f(0, 0, -90), sf::Vector3f(0, 180, 0) ),
+							String3D("Tweening", thefont, sf::Vector3f(-90, 0, 0), sf::Vector3f(0, -90, 0) ), };
+
+	claw::tween::single_tweener elementTweeners[4];
+	
+	double elementFactors[4] = {0};
 	
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
@@ -53,6 +58,8 @@ int main()
 	double cameraAngle = 0.0;
 	claw::tween::single_tweener cameraTween(cameraAngle, 3.141*2, 2.5, claw::tween::easing_sine::ease_in_out );
 
+	int activeElement = 0;
+
 	sf::Clock clock;
 	sf::Clock fpsClock;
 
@@ -70,10 +77,12 @@ int main()
 				if (event.key.code == sf::Keyboard::Escape)
 					window.close();
 				if (event.key.code == sf::Keyboard::Right) {
-					cameraTween = claw::tween::single_tweener (cameraAngle, cameraTween.get_end() + 3.141/2.0, 1.3, claw::tween::easing_elastic::ease_out );
+					cameraTween = claw::tween::single_tweener (cameraAngle, cameraTween.get_end() + 3.141/2.0, 1.0, claw::tween::easing_quad::ease_out );
+					++activeElement; if( activeElement > 3 ) activeElement = 0;
 				}
 				if (event.key.code == sf::Keyboard::Left) {
-					cameraTween = claw::tween::single_tweener (cameraAngle, cameraTween.get_end() - 3.141/2.0, 1.3, claw::tween::easing_elastic::ease_out );
+					cameraTween = claw::tween::single_tweener (cameraAngle, cameraTween.get_end() - 3.141/2.0, 1.0, claw::tween::easing_quad::ease_out );
+					--activeElement; if( activeElement < 0 ) activeElement = 3;
 				}
 			}
 
@@ -95,10 +104,17 @@ int main()
 
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		text1.Draw( window, sdfShader );
-		text2.Draw( window, sdfShader );
-		text3.Draw( window, sdfShader );
-		text4.Draw( window, sdfShader );
+		for( int i = 0; i != 4; ++i ) {
+			if( i == activeElement ) {
+				elementTweeners[i] = claw::tween::single_tweener( elementFactors[i], 1.0, 0.1, claw::tween::easing_sine::ease_in_out );
+			} else {
+				elementTweeners[i] = claw::tween::single_tweener( elementFactors[i], 0.0, 0.1, claw::tween::easing_sine::ease_in_out );
+			}
+			elementTweeners[i].update(delta);
+			elements[i].position.y = elementFactors[i]*30-30;
+			elements[i].colour.a = elementFactors[i]*128+126;
+			elements[i].Draw( window, sdfShader );
+		}
 
 		window.pushGLStates();
 			std::ostringstream oss;
