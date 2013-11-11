@@ -14,10 +14,48 @@
     <ClCompile Include="..\src\SDFontReader.cpp" />
     <ClCompile Include="..\src\SFML_SignedDepthDemo.cpp" />
     <ClCompile Include="..\src\String3D.cpp" />
+    <ClCompile Include="..\src\tween\base_tweener.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_back.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_bounce.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_circ.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_cubic.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_elastic.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_expo.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_linear.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_none.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_quad.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_quart.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_quint.cpp" />
+    <ClCompile Include="..\src\tween\easing\easing_sine.cpp" />
+    <ClCompile Include="..\src\tween\single_tweener.cpp" />
+    <ClCompile Include="..\src\tween\tweener.cpp" />
+    <ClCompile Include="..\src\tween\tweener_group.cpp" />
+    <ClCompile Include="..\src\tween\tweener_sequence.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\SDFontReader.h" />
     <ClInclude Include="..\src\String3D.h" />
+    <ClInclude Include="..\src\tween\base_tweener.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_back.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_bounce.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_circ.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_cubic.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_elastic.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_expo.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_linear.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_none.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_quad.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_quart.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_quint.hpp" />
+    <ClInclude Include="..\src\tween\easing\easing_sine.hpp" />
+    <ClInclude Include="..\src\tween\easing\symmetric_easing.hpp" />
+    <ClInclude Include="..\src\tween\single_tweener.hpp" />
+    <ClInclude Include="..\src\tween\tweener.hpp" />
+    <ClInclude Include="..\src\tween\tweener_group.hpp" />
+    <ClInclude Include="..\src\tween\tweener_sequence.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\tween\easing\impl\symmetric_easing.tpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C113BE27-77BB-4BAC-BF0A-AD7149E702F3}</ProjectGuid>
@@ -51,7 +89,7 @@
     <OutDir>$(SolutionDir)/../bin/</OutDir>
     <IntDir>$(SolutionDir)/obj/</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)</TargetName>
-    <IncludePath>C:\Dev\SFML-2.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Dev\SFML-2.1\include;C:\Dev;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Dev\SFML-2.1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -59,7 +97,7 @@
     <OutDir>$(SolutionDir)/../bin/</OutDir>
     <IntDir>$(SolutionDir)/obj/</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)</TargetName>
-    <IncludePath>C:\Dev\SFML-2.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Dev\SFML-2.1\include;C:\Dev;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Dev\SFML-2.1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
