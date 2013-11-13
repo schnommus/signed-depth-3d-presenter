@@ -8,6 +8,7 @@
 #include "String3D.h"
 
 #include "ResourceManager.h"
+#include "CameraController.h"
 
 class Application {
 public:
@@ -16,6 +17,8 @@ public:
 	void Initialize();
 
 	void Run();
+
+	const sf::Vector2u &GetSize();
 
 private:
 	void Draw();
@@ -26,6 +29,9 @@ private:
 
 	// Window, OpenGL context
 	sf::RenderWindow m_window;
+
+	// Scene camera controllers
+	FirstPersonCamera m_firstPersonCamera;
 
 	// Some default assets
 	sf::Font m_debugFont;
