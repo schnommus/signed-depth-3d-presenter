@@ -68,6 +68,11 @@ void Application::Logic() {
 		if (event.type == sf::Event::Resized)
 			glViewport(0, 0, event.size.width, event.size.height);
 	}
+
+	// Camera updates
+	m_firstPersonCamera.Update(m_delta, *this);
+
+	// Other logic
 }
 
 void Application::Draw() {
@@ -78,16 +83,17 @@ void Application::Draw() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	// CAMERA TRANSFORM GOES HERE
+	// CAMERA TRANSFORMS HERE
+	m_firstPersonCamera.Transform();
 
 	glClear(GL_DEPTH_BUFFER_BIT);
 
-	// ALL OTHER OPENGL DRAWING HERE
+	// OPENGL DRAWING HERE
 	str->Draw();
 
 	m_window.pushGLStates();
 
-		// ALL OTHER SFML DRAWING HERE
+		// SFML DRAWING HERE
 
 		DrawFPS();
 
@@ -101,4 +107,8 @@ void Application::DrawFPS() {
 	oss << 1.0f/m_delta << " FPS";
 	sf::Text fps(oss.str(), m_debugFont, 20U );
 	m_window.draw(fps);
+}
+
+const sf::Vector2u &Application::GetSize() {
+	return m_window.getSize();
 }
