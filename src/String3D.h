@@ -36,6 +36,7 @@ public:
 
 	sf::Vector3f m_position;
 	sf::Vector3f m_rotation;
+	sf::Vector2f m_bounds;
 	sf::Color m_colour;
 	float m_scale;
 
