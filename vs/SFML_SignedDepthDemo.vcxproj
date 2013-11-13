@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\SDFontReader.cpp" />
+    <ClCompile Include="..\src\SDFont.cpp" />
     <ClCompile Include="..\src\SFML_SignedDepthDemo.cpp" />
     <ClCompile Include="..\src\String3D.cpp" />
     <ClCompile Include="..\src\tween\base_tweener.cpp" />
@@ -33,7 +33,7 @@
     <ClCompile Include="..\src\tween\tweener_sequence.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\SDFontReader.h" />
+    <ClInclude Include="..\src\SDFont.h" />
     <ClInclude Include="..\src\String3D.h" />
     <ClInclude Include="..\src\tween\base_tweener.hpp" />
     <ClInclude Include="..\src\tween\easing\easing_back.hpp" />
