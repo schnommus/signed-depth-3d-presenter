@@ -1,14 +1,14 @@
 #include "String3D.h"
 
-String3D::String3D( std::string string, SDFont &font, sf::Vector3f position, sf::Vector3f rotation, sf::Shader &shader ) :
-	m_font(&font), m_shader(&shader) {
+String3D::String3D( std::string string, SDFont &font, sf::Vector3f position, sf::Vector3f rotation, sf::Shader &shader ) {
 
-	this->m_position = position;
-	this->m_rotation = rotation;
-	this->m_colour = sf::Color::White;
-	
+	m_position = position;
+	m_rotation = rotation;
+	m_colour = sf::Color::White;
 	m_scale = 0.4f;
 	m_string = string;
+	m_font = &font;
+	m_shader = &shader;
 
 	Update();
 }

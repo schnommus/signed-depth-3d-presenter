@@ -60,6 +60,10 @@ int main()
 	sf::Clock clock;
 	sf::Clock fpsClock;
 
+	sf::Vector3f camera_rotation(0, 0, 0);
+	sf::Vector3f camera_rotation_rad(0, 0, 0);
+	sf::Vector3f camera_position(0, 0, 150);
+
     while (window.isOpen())
     {
 		float delta = fpsClock.restart().asSeconds();
@@ -74,11 +78,9 @@ int main()
 				if (event.key.code == sf::Keyboard::Escape)
 					window.close();
 				if (event.key.code == sf::Keyboard::Right) {
-					//cameraTween = claw::tween::single_tweener (cameraAngle, cameraTween.get_end() + 3.141/2.0, 1.0, claw::tween::easing_elastic::ease_out );
 					++activeElement; if( activeElement > 3 ) activeElement = 0;
 				}
 				if (event.key.code == sf::Keyboard::Left) {
-					//cameraTween = claw::tween::single_tweener (cameraAngle, cameraTween.get_end() - 3.141/2.0, 1.0, claw::tween::easing_elastic::ease_out );
 					--activeElement; if( activeElement < 0 ) activeElement = 3;
 				}
 			}
@@ -86,6 +88,20 @@ int main()
             if (event.type == sf::Event::Resized)
                 glViewport(0, 0, event.size.width, event.size.height);
         }
+
+		if(sf::Mouse::isButtonPressed(sf::Mouse::Middle) ) {
+			camera_rotation.y += ((float)sf::Mouse::getPosition().x-(float)window.getSize().x/2)/7.0;
+			camera_rotation.x += ((float)sf::Mouse::getPosition().y-(float)window.getSize().y/2)/7.0;
+			sf::Mouse::setPosition(sf::Vector2i(window.getSize().x/2, window.getSize().y/2), window);
+		}
+
+		//camera_rotation_rad = sf::Vector3f(camera_rotation.x/180*3.14159, camera_rotation.y/180*3.14159, camera_rotation.z/180*3.14159 );
+		
+		if( sf::Keyboard::isKeyPressed(sf::Keyboard::Q) ) {
+			camera_rotation.z -= 100.0f*delta;
+		} if( sf::Keyboard::isKeyPressed(sf::Keyboard::E) ) {
+			camera_rotation.z += 100.0f*delta;
+		}
 
 		window.pushGLStates();
 			window.clear();
@@ -95,7 +111,42 @@ int main()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		gluLookAt(0, 0, 150, 0, 0, 0, 0, 1, 0 );
+		glRotatef(camera_rotation.x, 1.f, 0.f, 0.f);
+		glRotatef(camera_rotation.y, 0.f, 1.f, 0.f);
+		glRotatef(camera_rotation.z, 0.f, 0.f, 1.f);
+
+		GLfloat modelMatrix[16];
+		glGetFloatv(GL_MODELVIEW_MATRIX, modelMatrix);
+
+		float speed = 100.0*delta;
+		if( sf::Keyboard::isKeyPressed(sf::Keyboard::W) ) {
+			camera_position.x -= modelMatrix[0*4+2]*speed;
+			camera_position.y -= modelMatrix[1*4+2]*speed;
+			camera_position.z -= modelMatrix[2*4+2]*speed;
+		} if( sf::Keyboard::isKeyPressed(sf::Keyboard::S) ) {
+			camera_position.x += modelMatrix[0*4+2]*speed;
+			camera_position.y += modelMatrix[1*4+2]*speed;
+			camera_position.z += modelMatrix[2*4+2]*speed;
+		} if( sf::Keyboard::isKeyPressed(sf::Keyboard::A) ) {
+			camera_position.x -= modelMatrix[0*4+0]*speed;
+			camera_position.y -= modelMatrix[1*4+0]*speed;
+			camera_position.z -= modelMatrix[2*4+0]*speed;
+		} if( sf::Keyboard::isKeyPressed(sf::Keyboard::D) ) {
+			camera_position.x += modelMatrix[0*4+0]*speed;
+			camera_position.y += modelMatrix[1*4+0]*speed;
+			camera_position.z += modelMatrix[2*4+0]*speed;
+		} if( sf::Keyboard::isKeyPressed(sf::Keyboard::F) ) {
+			camera_position.x -= modelMatrix[0*4+1]*speed;
+			camera_position.y -= modelMatrix[1*4+1]*speed;
+			camera_position.z -= modelMatrix[2*4+1]*speed;
+		} if( sf::Keyboard::isKeyPressed(sf::Keyboard::R) ) {
+			camera_position.x += modelMatrix[0*4+1]*speed;
+			camera_position.y += modelMatrix[1*4+1]*speed;
+			camera_position.z += modelMatrix[2*4+1]*speed;
+		}
+
+
+		glTranslatef(-camera_position.x, -camera_position.y, -camera_position.z );
 
 		glClear(GL_DEPTH_BUFFER_BIT);
 
