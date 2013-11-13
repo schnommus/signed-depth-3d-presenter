@@ -326,3 +326,6 @@ vs/obj/link.10204.read.1.tlog
 vs/obj/link.10204-cvtres.write.1.tlog
 vs/obj/link.10204-cvtres.read.1.tlog
 vs/obj/String3D.obj
+*.obj
+*.tlog
+*.log
