@@ -6,7 +6,7 @@
 #include <sstream>
 #include <vector>
 
-#include "SDFontReader.h"
+#include "SDFont.h"
 #include "String3D.h"
 
 #include "tween\single_tweener.hpp"
@@ -16,10 +16,10 @@
 
 int main()
 {
-	SDFontReader thefont("../media/sdf1.txt", "../media/sdf1.png");
+	SDFont thefont("../media/sdf1.txt", "../media/sdf1.png");
 	
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "SFML_SignedDistance", sf::Style::Fullscreen);
-	window.setVerticalSyncEnabled(true);
+	window.setVerticalSyncEnabled(false);
 
 	sf::Font f; f.loadFromFile("../media/Delicious-Bold.otf");
     
@@ -29,15 +29,15 @@ int main()
 	sf::Shader sdfShader;
 	sdfShader.loadFromFile("../media/sdf.frag", sf::Shader::Fragment);
 
-	String3D elements[] = { String3D("OpenGL", thefont, sf::Vector3f(0, 0, 90), sf::Vector3f(0, 0, 0) ),
-							String3D("SDFonts", thefont, sf::Vector3f(90, 0, 0), sf::Vector3f(0, 90, 0) ),
-							String3D("And", thefont, sf::Vector3f(0, 0, -90), sf::Vector3f(0, 180, 0) ),
-							String3D("Tweening", thefont, sf::Vector3f(-90, 0, 0), sf::Vector3f(0, -90, 0) ), };
+	String3D elements[] = { String3D("opengl", thefont, sf::Vector3f(0, 0, 90), sf::Vector3f(0, 0, 0), sdfShader ),
+							String3D("sdfonts", thefont, sf::Vector3f(90, 0, 0), sf::Vector3f(0, 90, 0), sdfShader ),
+							String3D("and", thefont, sf::Vector3f(0, 0, -90), sf::Vector3f(0, 180, 0), sdfShader ),
+							String3D("tweening", thefont, sf::Vector3f(-90, 0, 0), sf::Vector3f(0, -90, 0), sdfShader ), };
 
 	claw::tween::single_tweener elementTweeners[4];
 	
 	double elementFactors[4] = {0};
-	
+
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glDepthMask(GL_TRUE);
@@ -54,9 +54,6 @@ int main()
     glLoadIdentity();
     GLfloat ratio = static_cast<float>(window.getSize().x) / window.getSize().y;
     glFrustum(-ratio, ratio, -1.f, 1.f, 1.f, 500.f);
-
-	double cameraAngle = 0.0;
-	claw::tween::single_tweener cameraTween(cameraAngle, 3.141*2, 2.5, claw::tween::easing_sine::ease_in_out );
 
 	int activeElement = 0;
 
@@ -77,11 +74,11 @@ int main()
 				if (event.key.code == sf::Keyboard::Escape)
 					window.close();
 				if (event.key.code == sf::Keyboard::Right) {
-					cameraTween = claw::tween::single_tweener (cameraAngle, cameraTween.get_end() + 3.141/2.0, 1.0, claw::tween::easing_quad::ease_out );
+					//cameraTween = claw::tween::single_tweener (cameraAngle, cameraTween.get_end() + 3.141/2.0, 1.0, claw::tween::easing_elastic::ease_out );
 					++activeElement; if( activeElement > 3 ) activeElement = 0;
 				}
 				if (event.key.code == sf::Keyboard::Left) {
-					cameraTween = claw::tween::single_tweener (cameraAngle, cameraTween.get_end() - 3.141/2.0, 1.0, claw::tween::easing_quad::ease_out );
+					//cameraTween = claw::tween::single_tweener (cameraAngle, cameraTween.get_end() - 3.141/2.0, 1.0, claw::tween::easing_elastic::ease_out );
 					--activeElement; if( activeElement < 0 ) activeElement = 3;
 				}
 			}
@@ -98,22 +95,20 @@ int main()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		cameraTween.update(delta);
-
-		gluLookAt(sin(cameraAngle)*150, 0, cos(cameraAngle)*150, 0, 0, 0, 0, 1, 0 );
+		gluLookAt(0, 0, 150, 0, 0, 0, 0, 1, 0 );
 
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		for( int i = 0; i != 4; ++i ) {
 			if( i == activeElement ) {
-				elementTweeners[i] = claw::tween::single_tweener( elementFactors[i], 1.0, 0.1, claw::tween::easing_sine::ease_in_out );
+				elementTweeners[i] = claw::tween::single_tweener( elementFactors[i], 1.0, 0.04, claw::tween::easing_sine::ease_in_out );
 			} else {
-				elementTweeners[i] = claw::tween::single_tweener( elementFactors[i], 0.0, 0.1, claw::tween::easing_sine::ease_in_out );
+				elementTweeners[i] = claw::tween::single_tweener( elementFactors[i], 0.0, 0.04, claw::tween::easing_sine::ease_in_out );
 			}
 			elementTweeners[i].update(delta);
-			elements[i].position.y = elementFactors[i]*30-30;
-			elements[i].colour.a = elementFactors[i]*128+126;
-			elements[i].Draw( window, sdfShader );
+			elements[i].m_position.y = elementFactors[i]*30-30;
+			elements[i].m_colour.a = elementFactors[i]*128+126;
+			elements[i].Draw();
 		}
 
 		window.pushGLStates();

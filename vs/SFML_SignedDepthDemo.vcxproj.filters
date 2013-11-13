@@ -33,9 +33,6 @@
     <ClCompile Include="..\src\SFML_SignedDepthDemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SDFontReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\String3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -90,11 +87,11 @@
     <ClCompile Include="..\src\tween\tweener_group.cpp">
       <Filter>tweenlib\impl</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SDFont.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\SDFontReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\String3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -151,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="..\src\tween\tweener_sequence.hpp">
       <Filter>tweenlib\header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SDFont.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
