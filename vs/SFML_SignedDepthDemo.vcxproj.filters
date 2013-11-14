@@ -176,6 +176,9 @@
     <ClInclude Include="..\src\EntityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Background.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\tween\easing\impl\symmetric_easing.tpp">

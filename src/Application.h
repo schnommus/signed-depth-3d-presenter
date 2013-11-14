@@ -26,6 +26,9 @@ public:
 
 	float Delta() const { return m_delta; }
 
+	// Window, OpenGL context
+	sf::RenderWindow m_window;
+
 private:
 	void Draw();
 
@@ -34,9 +37,6 @@ private:
 	void Logic();
 
 	void DrawFPS();
-
-	// Window, OpenGL context
-	sf::RenderWindow m_window;
 
 	// Scene camera controllers
 	FirstPersonCamera m_firstPersonCamera;
@@ -55,7 +55,8 @@ private:
 
 	// Entity management classes
 	EntityManager m_entitymanager,
-				  m_entitymanager_ui;
+				  m_entitymanager_ui,
+				  m_entitymanager_background;
 
 	// For 3D picking operations
 	unsigned int m_pickBuffer[PICK_BUFFER_SIZE];
