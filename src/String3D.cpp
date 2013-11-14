@@ -1,16 +1,10 @@
 #include "String3D.h"
 
-String3D::String3D( std::string string, SDFont &font, sf::Vector3f position, sf::Vector3f rotation, sf::Shader &shader ) {
-
-	m_position = position;
-	m_rotation = rotation;
+String3D::String3D( ) {
+	m_position = sf::Vector3f(0, 0, 0);
+	m_rotation = sf::Vector3f(0, 0, 0);
 	m_colour = sf::Color::White;
-	m_scale = 0.4f;
-	m_string = string;
-	m_font = &font;
-	m_shader = &shader;
-
-	Update();
+	m_scale = sf::Vector3f(0.2, 0.2, 0.2);
 }
 
 void String3D::Draw() {
@@ -21,7 +15,7 @@ void String3D::Draw() {
 		glRotatef(m_rotation.x, 1.f, 0.f, 0.f);
 		glRotatef(m_rotation.y, 0.f, 1.f, 0.f);
 		glRotatef(m_rotation.z, 0.f, 0.f, 1.f);
-		glScalef(m_scale, -m_scale, m_scale); //-ve scale y because y_offset works opposite: strange..
+		glScalef(m_scale.x, -m_scale.y, m_scale.z); //-ve scale y because y_offset works opposite: strange..
 		for( int i = 0; i != m_characters.size(); ++i ) {
 			glPushMatrix();
 				// Character position is relative to string position
@@ -34,7 +28,7 @@ void String3D::Draw() {
 	glPopMatrix();
 }
 
-void String3D::Update() {
+void String3D::UpdateGeometry() {
 	m_characters.clear();
 	m_characters.resize(m_string.size());
 
@@ -47,6 +41,13 @@ void String3D::Update() {
 		c->m_position.y = -offs;//-c->m_font->GlyphForChar(c->m_character).y_offset;
 		currentOffset += c->m_font->GlyphForChar(c->m_character).x_advance;
 	}
+}
+
+void String3D::SetString( std::string string, SDFont *font, sf::Shader *shader ) {
+	m_shader = shader;
+	m_font = font;
+	m_string = string;
+	UpdateGeometry();
 }
 
 void Character3D::Create( char character, SDFont &font, sf::Shader &shader ) {
