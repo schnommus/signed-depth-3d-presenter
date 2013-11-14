@@ -1,5 +1,6 @@
 #include "EntityManager.h"
 
+#include <SFML/OpenGL.hpp>
 #include <iostream>
 
 
@@ -50,6 +51,8 @@ void EntityManager::UpdateEntities( float delta ) {
 
 void EntityManager::DrawEntities() {
 	for( EntityMap::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
+		if( it->second->Is3D() )
+			glLoadName( it->second->Id() );
 		it->second->Draw();
 	}
 }

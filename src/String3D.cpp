@@ -1,4 +1,5 @@
 #include "String3D.h"
+#include "Application.h"
 
 String3D::String3D( ) {
 	m_position = sf::Vector3f(0, 0, 0);
@@ -48,6 +49,16 @@ void String3D::SetString( std::string string, SDFont *font, sf::Shader *shader )
 	m_font = font;
 	m_string = string;
 	UpdateGeometry();
+}
+
+void String3D::MouseOver() {
+	m_colour.a += 600.0*m_app->Delta();
+	if( m_colour.a > 250 ) m_colour.a = 250;
+}
+
+void String3D::Update( float delta ) {
+	m_colour.a -= 200.0*delta;
+	if( m_colour.a < 80 ) m_colour.a = 80;
 }
 
 void Character3D::Create( char character, SDFont &font, sf::Shader &shader ) {

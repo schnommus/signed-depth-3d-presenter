@@ -11,6 +11,9 @@
 #include "CameraController.h"
 #include "EntityManager.h"
 
+#define PICK_BUFFER_SIZE 256
+#define PICK_TOL 10
+
 class Application {
 public:
 	Application();
@@ -21,8 +24,12 @@ public:
 
 	const sf::Vector2u &GetSize();
 
+	float Delta() const { return m_delta; }
+
 private:
 	void Draw();
+
+	void Draw_OpenGL(bool selection);
 
 	void Logic();
 
@@ -50,4 +57,6 @@ private:
 	EntityManager m_entitymanager,
 				  m_entitymanager_ui;
 
+	// For 3D picking operations
+	unsigned int m_pickBuffer[PICK_BUFFER_SIZE];
 };
