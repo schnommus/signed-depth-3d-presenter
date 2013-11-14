@@ -9,6 +9,7 @@
 
 #include "ResourceManager.h"
 #include "CameraController.h"
+#include "EntityManager.h"
 
 class Application {
 public:
@@ -45,6 +46,8 @@ private:
 	// Resource management classes
 	ResourceManager<SDFont> m_SDFontManager;
 
-	// TODO: Remove!
-	String3D *str;
+	// Entity management classes
+	EntityManager m_entitymanager,
+				  m_entitymanager_ui;
+
 };

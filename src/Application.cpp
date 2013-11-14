@@ -4,9 +4,11 @@
 
 #include <iostream>
 #include <sstream>
+#include <cmath>
 
 Application::Application()
-	: m_window(sf::VideoMode::getDesktopMode(), "Application", sf::Style::Fullscreen )
+	: m_window(sf::VideoMode::getDesktopMode(), "Application", sf::Style::Fullscreen ), 
+	  m_entitymanager(this), m_entitymanager_ui(this)
 { std::cout << "Opened context." << std::endl; }
 
 void Application::Initialize() {
@@ -37,7 +39,16 @@ void Application::Initialize() {
 	GLfloat ratio = static_cast<float>(m_window.getSize().x) / m_window.getSize().y;
 	glFrustum(-ratio, ratio, -1.f, 1.f, 1.f, 500.f);
 
-	str = new String3D("Hello :D", m_SDFontManager.Fetch("../media/sdf1.txt", "../media/sdf1.png"), sf::Vector3f(0, 0, -100), sf::Vector3f(0, 0, 0), m_textShader_default );
+	for( int i = 0; i != 2; ++i ) {
+		String3D *str = dynamic_cast<String3D*>(m_entitymanager.AddEntity( new String3D ));
+		str->SetString("Really goddamn long text that is gonna probably take a while to render because I am not wanting to make it shorter", &m_SDFontManager.Fetch("../media/sdf1.txt", "../media/sdf1.png"), &m_textShader_default);
+		str->m_position.x = rand()%500-250;
+		str->m_position.y = rand()%500-250;
+		str->m_position.z = rand()%500-250;
+		str->m_rotation.x = rand()%360;
+		str->m_rotation.y = rand()%360;
+		str->m_rotation.z = rand()%360;
+	}
 }
 
 void Application::Run() {
@@ -73,6 +84,11 @@ void Application::Logic() {
 	m_firstPersonCamera.Update(m_delta, *this);
 
 	// Other logic
+	m_entitymanager_ui.UpdateEntities( m_delta );
+	m_entitymanager.UpdateEntities( m_delta );
+
+	m_entitymanager_ui.DoDeletions();
+	m_entitymanager.DoDeletions();
 }
 
 void Application::Draw() {
@@ -89,11 +105,12 @@ void Application::Draw() {
 	glClear(GL_DEPTH_BUFFER_BIT);
 
 	// OPENGL DRAWING HERE
-	str->Draw();
+	m_entitymanager.DrawEntities();
 
 	m_window.pushGLStates();
 
 		// SFML DRAWING HERE
+		m_entitymanager_ui.DrawEntities();
 
 		DrawFPS();
 

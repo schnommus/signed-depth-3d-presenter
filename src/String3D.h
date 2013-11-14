@@ -5,6 +5,8 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "Entity.h"
+
 class Character3D {
 public:
 	friend class String3D;
@@ -25,20 +27,19 @@ private:
 	char m_character;
 };
 
-class String3D {
+class String3D : public Entity3D {
 public:
 
-	String3D( std::string string, SDFont &font, sf::Vector3f position, sf::Vector3f rotation, sf::Shader &shader  );
+	String3D();
 
-	void Draw();
+	virtual void Draw();
 
-	void Update();
+	void UpdateGeometry();
 
-	sf::Vector3f m_position;
-	sf::Vector3f m_rotation;
+	void SetString( std::string string, SDFont *font, sf::Shader *shader );
+
 	sf::Vector2f m_bounds;
 	sf::Color m_colour;
-	float m_scale;
 
 private:
 	std::string m_string;
