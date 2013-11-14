@@ -52,8 +52,8 @@ void String3D::SetString( std::string string, SDFont *font, sf::Shader *shader )
 }
 
 void String3D::MouseOver() {
-	m_colour.a += 600.0*m_app->Delta();
-	if( m_colour.a > 250 ) m_colour.a = 250;
+	if( m_colour.a > 240 ) m_colour.a = 253;
+	else m_colour.a += 600.0*m_app->Delta();
 }
 
 void String3D::Update( float delta ) {

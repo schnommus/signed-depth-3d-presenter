@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Application.h" />
+    <ClInclude Include="..\src\Background.h" />
     <ClInclude Include="..\src\CameraController.h" />
     <ClInclude Include="..\src\Entity.h" />
     <ClInclude Include="..\src\EntityManager.h" />

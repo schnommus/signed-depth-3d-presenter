@@ -6,9 +6,11 @@
 #include <sstream>
 #include <cmath>
 
+#include "Background.h"
+
 Application::Application()
 	: m_window(sf::VideoMode::getDesktopMode(), "Application", sf::Style::Fullscreen ), 
-	  m_entitymanager(this), m_entitymanager_ui(this)
+	  m_entitymanager(this), m_entitymanager_ui(this), m_entitymanager_background(this)
 { std::cout << "Opened context." << std::endl; }
 
 void Application::Initialize() {
@@ -35,6 +37,8 @@ void Application::Initialize() {
 
 	// Assign picking buffer
 	glSelectBuffer( PICK_BUFFER_SIZE, m_pickBuffer );
+
+	m_entitymanager_background.AddEntity( new Background() );
 
 	for( int i = 0; i != 200; ++i ) {
 		String3D *str = dynamic_cast<String3D*>(m_entitymanager.AddEntity( new String3D ));
@@ -81,16 +85,19 @@ void Application::Logic() {
 	m_firstPersonCamera.Update(m_delta, *this);
 
 	// Other logic
+	m_entitymanager_background.UpdateEntities( m_delta );
 	m_entitymanager_ui.UpdateEntities( m_delta );
 	m_entitymanager.UpdateEntities( m_delta );
 
 	m_entitymanager_ui.DoDeletions();
 	m_entitymanager.DoDeletions();
+	m_entitymanager_background.DoDeletions();
 }
 
 void Application::Draw() {
 	m_window.pushGLStates();
 		m_window.clear(); // Could also draw 2D background here
+		m_entitymanager_background.DrawEntities();
 	m_window.popGLStates();
 
 	glRenderMode( GL_SELECT );
