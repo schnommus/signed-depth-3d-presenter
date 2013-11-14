@@ -14,6 +14,7 @@ public:
 	virtual void Update( float delta ) {}
 	virtual void Draw() {}
 	virtual void Destroy() {}
+	virtual void MouseOver() {}
 
 	// Some getters & setters
 	inline unsigned int &Id() { return m_id; }

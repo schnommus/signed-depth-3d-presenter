@@ -34,6 +34,10 @@ public:
 
 	virtual void Draw();
 
+	virtual void MouseOver();
+
+	virtual void Update( float delta );
+
 	void UpdateGeometry();
 
 	void SetString( std::string string, SDFont *font, sf::Shader *shader );

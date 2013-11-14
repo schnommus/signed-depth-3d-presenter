@@ -33,15 +33,12 @@ void Application::Initialize() {
 	// TODO: Take care of relativity: new sizes; text-clipping?
 	glViewport(0, 0, m_window.getSize().x, m_window.getSize().y);
 
-	// Setup a perspective projection
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	GLfloat ratio = static_cast<float>(m_window.getSize().x) / m_window.getSize().y;
-	glFrustum(-ratio, ratio, -1.f, 1.f, 1.f, 500.f);
+	// Assign picking buffer
+	glSelectBuffer( PICK_BUFFER_SIZE, m_pickBuffer );
 
-	for( int i = 0; i != 2; ++i ) {
+	for( int i = 0; i != 200; ++i ) {
 		String3D *str = dynamic_cast<String3D*>(m_entitymanager.AddEntity( new String3D ));
-		str->SetString("Really goddamn long text that is gonna probably take a while to render because I am not wanting to make it shorter", &m_SDFontManager.Fetch("../media/sdf1.txt", "../media/sdf1.png"), &m_textShader_default);
+		str->SetString("Text", &m_SDFontManager.Fetch("../media/sdf1.txt", "../media/sdf1.png"), &m_textShader_default);
 		str->m_position.x = rand()%500-250;
 		str->m_position.y = rand()%500-250;
 		str->m_position.z = rand()%500-250;
@@ -96,16 +93,13 @@ void Application::Draw() {
 		m_window.clear(); // Could also draw 2D background here
 	m_window.popGLStates();
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	glRenderMode( GL_SELECT );
+		Draw_OpenGL(true);
+	int nHits = glRenderMode( GL_RENDER );
+		Draw_OpenGL(false);
 
-	// CAMERA TRANSFORMS HERE
-	m_firstPersonCamera.Transform();
-
-	glClear(GL_DEPTH_BUFFER_BIT);
-
-	// OPENGL DRAWING HERE
-	m_entitymanager.DrawEntities();
+	if(nHits > 0)
+		m_entitymanager.GetEntityWithId(m_pickBuffer[3])->MouseOver();
 
 	m_window.pushGLStates();
 
@@ -117,6 +111,36 @@ void Application::Draw() {
 	m_window.popGLStates();
 
 	m_window.display();
+}
+
+void Application::Draw_OpenGL(bool selection) {
+	// Setup a perspective projection
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	if( selection ) {
+		int viewport[4] = {0, 0, m_window.getSize().x, m_window.getSize().y};
+		gluPickMatrix( (double)sf::Mouse::getPosition().x, (double)m_window.getSize().y-(double)sf::Mouse::getPosition().y, PICK_TOL, PICK_TOL, viewport );
+	}
+
+	GLfloat ratio = static_cast<float>(m_window.getSize().x) / m_window.getSize().y;
+	glFrustum(-ratio, ratio, -1.f, 1.f, 1.f, 500.f);
+
+	// Blank all names before draws
+	glInitNames();
+	glPushName(0xFFFFFFFF);
+
+	// Begin camera-space rendering
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	// CAMERA TRANSFORMS HERE
+	m_firstPersonCamera.Transform();
+
+	glClear(GL_DEPTH_BUFFER_BIT);
+
+	// OPENGL DRAWING HERE
+	m_entitymanager.DrawEntities();
 }
 
 void Application::DrawFPS() {
