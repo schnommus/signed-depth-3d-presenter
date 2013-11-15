@@ -15,6 +15,7 @@ public:
 	virtual void Draw() {}
 	virtual void Destroy() {}
 	virtual void MouseOver() {}
+	virtual void HandleSFMLEvent( const sf::Event &event) {}
 
 	// Some getters & setters
 	inline unsigned int &Id() { return m_id; }

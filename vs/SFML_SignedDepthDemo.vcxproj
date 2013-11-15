@@ -62,6 +62,7 @@
     <ClInclude Include="..\src\tween\tweener.hpp" />
     <ClInclude Include="..\src\tween\tweener_group.hpp" />
     <ClInclude Include="..\src\tween\tweener_sequence.hpp" />
+    <ClInclude Include="..\src\ui\UI_CameraInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\tween\easing\impl\symmetric_easing.tpp" />
@@ -106,8 +107,8 @@
     <OutDir>$(SolutionDir)/../bin/</OutDir>
     <IntDir>$(SolutionDir)/obj/</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)</TargetName>
-    <IncludePath>C:\Dev\SFML-2.1\include;C:\Dev;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Dev\SFML-2.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Dev\SFGUI\include;C:\Dev\SFML-2.1\include;C:\Dev;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Dev\SFGUI\lib;C:\Dev\SFML-2.1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -131,14 +132,14 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>SFML_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>sfml-graphics-s.lib;sfml-system-s.lib;sfml-window-s.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-system.lib;sfml-window.lib;glu32.lib;opengl32.lib;sfgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

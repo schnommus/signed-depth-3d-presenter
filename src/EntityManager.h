@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include <map>
 #include <vector>
+#include <SFML/System.hpp>
 
 class Application;
 
@@ -22,6 +23,8 @@ class EntityManager {
 public:
 	EntityManager(Application *app);
 	~EntityManager();
+
+	void HandleSFMLEvent( sf::Event event );
 
 	Entity *AddEntity( Entity *ent );
 

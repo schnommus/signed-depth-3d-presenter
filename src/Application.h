@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFGUI/SFGUI.hpp>
 
 #include <vector>
 
@@ -28,6 +29,10 @@ public:
 
 	// Window, OpenGL context
 	sf::RenderWindow m_window;
+
+	// Dealing with UI elements
+	sfg::Desktop m_desktop;
+	sfg::SFGUI m_sfgui;
 
 private:
 	void Draw();
