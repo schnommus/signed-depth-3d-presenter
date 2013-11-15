@@ -51,14 +51,31 @@ void String3D::SetString( std::string string, SDFont *font, sf::Shader *shader )
 	UpdateGeometry();
 }
 
-void String3D::MouseOver() {
-	if( m_colour.a > 240 ) m_colour.a = 253;
-	else m_colour.a += 600.0*m_app->Delta();
+void String3D::Update( float delta ) {
+	if( m_app->SelectedEntityId() == this->Id() ) {
+		if( m_colour.a > 240 ) m_colour.a = 253;
+		else m_colour.a += 600.0*m_app->Delta();
+	} else {
+		m_colour.a -= 200.0*delta;
+		if( m_colour.a < 80 ) m_colour.a = 80;
+	}
 }
 
-void String3D::Update( float delta ) {
-	m_colour.a -= 200.0*delta;
-	if( m_colour.a < 80 ) m_colour.a = 80;
+void String3D::Initialize() {
+	AddNamedProperty(std::string("Text"), (std::string*)&m_string );
+	AddNamedProperty(std::string("X Position"), (float*)&m_position.x );
+	AddNamedProperty(std::string("Y Position"), (float*)&m_position.y );
+	AddNamedProperty(std::string("Z Position"), (float*)&m_position.z );
+	AddNamedProperty(std::string("X Rotation"), (float*)&m_rotation.x );
+	AddNamedProperty(std::string("Y Rotation"), (float*)&m_rotation.y );
+	AddNamedProperty(std::string("Z Rotation"), (float*)&m_rotation.z );
+	/*AddNamedProperty(std::string("Red"), (int*)&m_colour.r );
+	AddNamedProperty(std::string("Green"), (int*)&m_colour.g );
+	AddNamedProperty(std::string("Blue"), (int*)&m_colour.b );*/
+}
+
+void String3D::PropertyAltered() {
+	UpdateGeometry();
 }
 
 void Character3D::Create( char character, SDFont &font, sf::Shader &shader ) {

@@ -27,12 +27,19 @@ public:
 
 	float Delta() const { return m_delta; }
 
+	unsigned int SelectedEntityId() const { return m_selectedEntityId; }
+
 	// Window, OpenGL context
 	sf::RenderWindow m_window;
 
 	// Dealing with UI elements
 	sfg::Desktop m_desktop;
 	sfg::SFGUI m_sfgui;
+
+	// Entity management classes
+	EntityManager m_entitymanager,
+		m_entitymanager_ui,
+		m_entitymanager_background;
 
 private:
 	void Draw();
@@ -58,11 +65,9 @@ private:
 	// Resource management classes
 	ResourceManager<SDFont> m_SDFontManager;
 
-	// Entity management classes
-	EntityManager m_entitymanager,
-				  m_entitymanager_ui,
-				  m_entitymanager_background;
-
 	// For 3D picking operations
 	unsigned int m_pickBuffer[PICK_BUFFER_SIZE];
+
+	// (-1 if none)
+	unsigned int m_selectedEntityId;
 };

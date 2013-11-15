@@ -32,11 +32,13 @@ public:
 
 	String3D();
 
+	virtual void Initialize();
+
 	virtual void Draw();
 
-	virtual void MouseOver();
-
 	virtual void Update( float delta );
+
+	virtual void PropertyAltered();
 
 	void UpdateGeometry();
 
