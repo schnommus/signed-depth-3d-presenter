@@ -88,3 +88,9 @@ void EntityManager::RemoveAllEntities() {
 	}
 }
 
+void EntityManager::HandleSFMLEvent( sf::Event event ) {
+	for( EntityMap::iterator it = m_entities.begin(); it != m_entities.end(); ++it) {
+		it->second->HandleSFMLEvent( event );
+	}
+}
+

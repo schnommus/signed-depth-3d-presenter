@@ -28,6 +28,9 @@
     <Filter Include="tweenlib\header\easing">
       <UniqueIdentifier>{2015f343-5171-4e18-9582-b4b8a700f698}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ui">
+      <UniqueIdentifier>{6879fa54-48e0-43e5-aee2-67bf6219f0ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\SFML_SignedDepthDemo.cpp">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Background.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui\UI_CameraInfo.h">
+      <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

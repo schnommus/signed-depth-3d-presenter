@@ -4,7 +4,7 @@ uniform vec4 finalcolour;
 void main() {
     // retrieve distance from texture
     float mask = texture2D( texture, gl_TexCoord[0].xy).a;
-
+	
     // use current drawing color
     vec4 clr;
     clr.rgb = finalcolour.rgb;
