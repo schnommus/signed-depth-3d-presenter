@@ -13,6 +13,7 @@ void CameraController::Transform() {
 
 
 void FirstPersonCamera::Update( float delta, Application &app ) {
+
 	// Rotate camera if MMB down
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
 		m_rotation.y += ((float)sf::Mouse::getPosition().x-m_mousePrev.x)/7.0;
