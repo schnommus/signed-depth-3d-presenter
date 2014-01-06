@@ -82,6 +82,20 @@ void Application::Logic() {
 			m_window.close();
 		}
 
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space ) {
+			m_firstPersonCamera.AddNewKeyframe( Keyframe( m_firstPersonCamera.m_position, m_firstPersonCamera.m_rotation, SelectedEntityId() ));
+		}
+
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Left ) {
+			m_firstPersonCamera.PrevKeyframe();
+			m_selectedEntityId = m_firstPersonCamera.overriddenSelectionID;
+		}
+
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Right ) {
+			m_firstPersonCamera.NextKeyframe();
+			m_selectedEntityId = m_firstPersonCamera.overriddenSelectionID;
+		}
+
 		if (event.type == sf::Event::Resized)
 			glViewport(0, 0, event.size.width, event.size.height);
 
