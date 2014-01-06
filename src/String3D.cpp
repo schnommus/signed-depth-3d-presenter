@@ -13,14 +13,18 @@ void String3D::Draw() {
 	glPushMatrix();
 
 		glTranslatef(m_position.x, m_position.y, m_position.z);
+
 		glRotatef(m_rotation.x, 1.f, 0.f, 0.f);
 		glRotatef(m_rotation.y, 0.f, 1.f, 0.f);
 		glRotatef(m_rotation.z, 0.f, 0.f, 1.f);
+
 		glScalef(m_scale.x, -m_scale.y, m_scale.z); //-ve scale y because y_offset works opposite: strange..
+
 		for( int i = 0; i != m_characters.size(); ++i ) {
 			glPushMatrix();
 				// Character position is relative to string position
 				glTranslatef(m_characters[i].m_position.x, m_characters[i].m_position.y, 0);
+				
 				m_characters[i].m_colour = m_colour;
 				m_characters[i].Draw();
 			glPopMatrix();
