@@ -2,13 +2,16 @@
 #include "Application.h"
 #include "tween/easing/easing_quad.hpp"
 #include "tween/single_tweener.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 #include <SFML/OpenGL.hpp>
 
 void CameraController::Transform() {
-	glRotatef(-m_rotation.x, 1.f, 0.f, 0.f);
-	glRotatef(-m_rotation.y, 0.f, 1.f, 0.f);
-	glRotatef(-m_rotation.z, 0.f, 0.f, 1.f);
+	glLoadMatrixf( glm::value_ptr(m_rotationMatrix) );
+	//glRotatef(-m_rotation.x, 1.f, 0.f, 0.f);
+	//glRotatef(-m_rotation.y, 0.f, 1.f, 0.f);
+	//glRotatef(-m_rotation.z, 0.f, 0.f, 1.f);
 
 	glTranslatef(-m_position.x, -m_position.y, -m_position.z );
 }
@@ -31,9 +34,11 @@ void CameraController::ApplyCurrentKeyframe() {
 		m_positionTweeners.insert( claw::tween::single_tweener( m_position.z, m_keyframes[m_currentKeyframe].m_position.z, 1.0, claw::tween::easing_quad::ease_in_out ) );
 
 		m_rotationTweeners.clear();
-		m_rotationTweeners.insert( claw::tween::single_tweener( m_rotation.x, m_keyframes[m_currentKeyframe].m_rotation.x, 1.0, claw::tween::easing_quad::ease_in_out ) );
-		m_rotationTweeners.insert( claw::tween::single_tweener( m_rotation.y, m_keyframes[m_currentKeyframe].m_rotation.y, 1.0, claw::tween::easing_quad::ease_in_out ) );
-		m_rotationTweeners.insert( claw::tween::single_tweener( m_rotation.z, m_keyframes[m_currentKeyframe].m_rotation.z, 1.0, claw::tween::easing_quad::ease_in_out ) );
+		m_rotationLerpValue = 0;
+		m_rotationTweeners.insert( claw::tween::single_tweener( m_rotationLerpValue, 1.0f, 1.0, claw::tween::easing_quad::ease_in_out ) );
+
+		m_previousQuaternion = glm::quat_cast(m_rotationMatrix);
+		m_currentQuaternion = m_keyframes[m_currentKeyframe].m_rotation;
 	
 		overriddenSelectionID = m_keyframes[m_currentKeyframe].m_selectedEntityID;
 	}
@@ -47,36 +52,22 @@ void CameraController::AddNewKeyframe( Keyframe &keyframe ) {
 
 void FirstPersonCamera::Update( float delta, Application &app ) {
 
-	// Load a blank matrix (Outside draw loop; nothing is overwritten)
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	// Transform based on rotation
-	glRotatef(-m_rotation.x, 1.f, 0.f, 0.f);
-	glRotatef(-m_rotation.y, 0.f, 1.f, 0.f);
-	glRotatef(-m_rotation.z, 0.f, 0.f, 1.f);
-
-	// Pull it into memory
-	GLfloat modelMatrix[16];
-	glGetFloatv(GL_MODELVIEW_MATRIX, modelMatrix);
-
-	glLoadIdentity();
-
 	float speed = 100.0*delta;
 
 	// Translate/rotate camera if MMB down
 	if(sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
 
 		if( !sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ) {
-			m_rotation.y -= ((float)sf::Mouse::getPosition().x-m_mousePrev.x)/7.0;
-			m_rotation.x -= ((float)sf::Mouse::getPosition().y-m_mousePrev.y)/7.0;
+			m_rotationMatrix = glm::rotate(glm::mat4(), ((float)sf::Mouse::getPosition().x-m_mousePrev.x)/7.0f, glm::vec3(0.0, 1.0, 0.0) ) * m_rotationMatrix;
+			m_rotationMatrix = glm::rotate(glm::mat4(), ((float)sf::Mouse::getPosition().y-m_mousePrev.y)/7.0f, glm::vec3(1.0, 0.0, 0.0) ) * m_rotationMatrix;
 		} else {
-			m_position.x -= modelMatrix[0*4+0]*speed*((float)sf::Mouse::getPosition().x-m_mousePrev.x)/7.0;
-			m_position.y -= modelMatrix[1*4+0]*speed*((float)sf::Mouse::getPosition().x-m_mousePrev.x)/7.0;
-			m_position.z -= modelMatrix[2*4+0]*speed*((float)sf::Mouse::getPosition().x-m_mousePrev.x)/7.0;
-			m_position.x += modelMatrix[0*4+1]*speed*((float)sf::Mouse::getPosition().y-m_mousePrev.y)/7.0;
-			m_position.y += modelMatrix[1*4+1]*speed*((float)sf::Mouse::getPosition().y-m_mousePrev.y)/7.0;
-			m_position.z += modelMatrix[2*4+1]*speed*((float)sf::Mouse::getPosition().y-m_mousePrev.y)/7.0;
+			m_position.x -= m_rotationMatrix[0][0]*speed*((float)sf::Mouse::getPosition().x-m_mousePrev.x)/7.0;
+			m_position.y -= m_rotationMatrix[1][0]*speed*((float)sf::Mouse::getPosition().x-m_mousePrev.x)/7.0;
+			m_position.z -= m_rotationMatrix[2][0]*speed*((float)sf::Mouse::getPosition().x-m_mousePrev.x)/7.0;
+
+			m_position.x += m_rotationMatrix[0][1]*speed*((float)sf::Mouse::getPosition().y-m_mousePrev.y)/7.0;
+			m_position.y += m_rotationMatrix[1][1]*speed*((float)sf::Mouse::getPosition().y-m_mousePrev.y)/7.0;
+			m_position.z += m_rotationMatrix[2][1]*speed*((float)sf::Mouse::getPosition().y-m_mousePrev.y)/7.0;
 		}
 
 		// Wrap screen when mouse hits edges
@@ -92,22 +83,23 @@ void FirstPersonCamera::Update( float delta, Application &app ) {
 
 	float zoomSpeed = 5.0f;
 	if( m_mouseWheelDelta != 0 ) {
-		m_position.x += zoomSpeed*m_mouseWheelDelta*modelMatrix[0*4+2]*speed;
-		m_position.y += zoomSpeed*m_mouseWheelDelta*modelMatrix[1*4+2]*speed;
-		m_position.z += zoomSpeed*m_mouseWheelDelta*modelMatrix[2*4+2]*speed;
+		if( !sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) ) {
+			m_position.x += zoomSpeed*m_mouseWheelDelta*m_rotationMatrix[0][2]*speed;
+			m_position.y += zoomSpeed*m_mouseWheelDelta*m_rotationMatrix[1][2]*speed;
+			m_position.z += zoomSpeed*m_mouseWheelDelta*m_rotationMatrix[2][2]*speed;
+		} else {
+			m_rotationMatrix = glm::rotate(glm::mat4(), zoomSpeed*m_mouseWheelDelta*speed*0.3f, glm::vec3(0.0, 0.0, 1.0) ) * m_rotationMatrix;
+		}
 		m_mouseWheelDelta = 0;
 	}
 
 	m_mousePrev.x = (float)sf::Mouse::getPosition().x;
 	m_mousePrev.y = (float)sf::Mouse::getPosition().y;
 
-	// Left/Right roll controls
-	if( sf::Keyboard::isKeyPressed(sf::Keyboard::Q) ) {
-		m_rotation.z -= 100.0f*delta;
-	} if( sf::Keyboard::isKeyPressed(sf::Keyboard::E) ) {
-		m_rotation.z += 100.0f*delta;
-	}
-
 	m_positionTweeners.update( delta );
 	m_rotationTweeners.update( delta );
+
+	if(m_rotationLerpValue > 0.001f && m_rotationLerpValue < 0.999f ) {
+		m_rotationMatrix = glm::mat4_cast( glm::slerp( m_previousQuaternion, m_currentQuaternion, (float)m_rotationLerpValue ) );
+	}
 }

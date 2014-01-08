@@ -9,6 +9,8 @@
 #include "Background.h"
 #include "ui/UI_CameraInfo.h"
 
+#include "glm/gtc/quaternion.hpp"
+
 Application::Application()
 	: m_window(sf::VideoMode::getDesktopMode(), "Application", sf::Style::Fullscreen ), 
 	  m_entitymanager(this), m_entitymanager_ui(this), m_entitymanager_background(this), m_selectedEntityId(0)
@@ -83,7 +85,7 @@ void Application::Logic() {
 		}
 
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space ) {
-			m_firstPersonCamera.AddNewKeyframe( Keyframe( m_firstPersonCamera.m_position, m_firstPersonCamera.m_rotation, SelectedEntityId() ));
+			m_firstPersonCamera.AddNewKeyframe( Keyframe( m_firstPersonCamera.m_position, glm::quat_cast(m_firstPersonCamera.m_rotationMatrix), SelectedEntityId() ));
 		}
 
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Left ) {
