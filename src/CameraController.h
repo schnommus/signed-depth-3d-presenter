@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "glm/glm.hpp"
 #include "tween/tweener_group.hpp"
 
 class Application;
@@ -30,7 +31,7 @@ m_position(position), m_rotation(rotation), m_selectedEntityID(entID) {}
 class CameraController {
 public:
 	CameraController( sf::Vector3f position = sf::Vector3f(0, 0, 0), sf::Vector3f rotation = sf::Vector3f(0, 0, 0) )
-		: m_position(position), m_rotation(rotation) { }
+		: m_position(position), m_rotation(rotation), m_mouseWheelDelta(0) { }
 
 	virtual void Update( float delta, Application &app ) = 0;
 
@@ -44,6 +45,8 @@ public:
 
 	Vector3lf m_position, m_rotation;
 	unsigned int overriddenSelectionID;
+
+	int m_mouseWheelDelta;
 
 protected:
 	virtual void ApplyCurrentKeyframe();
