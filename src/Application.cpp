@@ -96,6 +96,10 @@ void Application::Logic() {
 			m_selectedEntityId = m_firstPersonCamera.overriddenSelectionID;
 		}
 
+		if (event.type == sf::Event::MouseWheelMoved) {
+			m_firstPersonCamera.m_mouseWheelDelta = event.mouseWheel.delta;
+		}
+
 		if (event.type == sf::Event::Resized)
 			glViewport(0, 0, event.size.width, event.size.height);
 
