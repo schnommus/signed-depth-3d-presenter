@@ -99,8 +99,8 @@
     <OutDir>$(SolutionDir)/../bin/</OutDir>
     <IntDir>$(SolutionDir)/obj/</IntDir>
     <TargetName>$(ProjectName)_$(Configuration)</TargetName>
-    <IncludePath>C:\Dev\SFML-2.1\include;C:\Dev;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Dev\SFML-2.1\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Dev\SFGUI\include;C:\Dev\SFML-2.1\include;C:\Dev;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Dev\SFGUI\lib;C:\Dev\SFML-2.1\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -121,7 +121,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;glu32.lib;sfgui.lib%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

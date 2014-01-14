@@ -40,7 +40,7 @@ public:
 					*boost::any_cast<float*>(m_propertyReferences[i].m_target) = spin->GetValue();
 				} else if ( m_propertyReferences[i].m_type == "int" ) {
 					sfg::SpinButton *spin = dynamic_cast<sfg::SpinButton*>(m_propertyReferences[i].m_widget.get());
-					*boost::any_cast<int*>(m_propertyReferences[i].m_target) = (int)spin->GetValue();
+					*boost::any_cast<unsigned char*>(m_propertyReferences[i].m_target) = (unsigned char)spin->GetValue();
 				}
 			}
 			m_app->m_entitymanager.GetEntityWithId(m_app->SelectedEntityId())->PropertyAltered();
@@ -82,7 +82,7 @@ public:
 				// Is it a float property? Spinbox widget.
 				try {
 					float *f = boost::any_cast<float*>(property.m_value);
-					sfg::SpinButton::Ptr spin = sfg::SpinButton::Create(-500, 500, 1);
+					sfg::SpinButton::Ptr spin = sfg::SpinButton::Create(-500, 500, 0.01);
 					spin->SetValue( *f );
 					spin->SetRequisition( sf::Vector2f( 80.f, 0.f ) );
 					spin->SetDigits( 2 );
@@ -93,9 +93,10 @@ public:
 
 				// Is it an int property? Spinbox widget.
 				try {
-					int *f = boost::any_cast<int*>(property.m_value);
+					unsigned char *f = boost::any_cast<unsigned char*>(property.m_value);
+					float fv = (float) *f;
 					sfg::SpinButton::Ptr spin = sfg::SpinButton::Create(-500, 500, 1);
-					spin->SetValue( *f );
+					spin->SetValue( fv );
 					spin->SetRequisition( sf::Vector2f( 80.f, 0.f ) );
 					spin->SetDigits( 2 );
 					PropertyReference pr = {"int", property.m_value, spin };

@@ -84,7 +84,7 @@ void Application::Logic() {
 			m_window.close();
 		}
 
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space ) {
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F1 ) {
 			m_firstPersonCamera.AddNewKeyframe( Keyframe( m_firstPersonCamera.m_position, glm::quat_cast(m_firstPersonCamera.m_rotationMatrix), SelectedEntityId() ));
 		}
 
