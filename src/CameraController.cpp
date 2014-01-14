@@ -9,9 +9,6 @@
 
 void CameraController::Transform() {
 	glLoadMatrixf( glm::value_ptr(m_rotationMatrix) );
-	//glRotatef(-m_rotation.x, 1.f, 0.f, 0.f);
-	//glRotatef(-m_rotation.y, 0.f, 1.f, 0.f);
-	//glRotatef(-m_rotation.z, 0.f, 0.f, 1.f);
 
 	glTranslatef(-m_position.x, -m_position.y, -m_position.z );
 }

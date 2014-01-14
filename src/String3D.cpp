@@ -18,6 +18,8 @@ void String3D::Draw() {
 		glRotatef(m_rotation.y, 0.f, 1.f, 0.f);
 		glRotatef(m_rotation.z, 0.f, 0.f, 1.f);
 
+		m_scale.y = m_scale.z = m_scale.x; //Text is uniform scale! (based on X)
+
 		glScalef(m_scale.x, -m_scale.y, m_scale.z); //-ve scale y because y_offset works opposite: strange..
 
 		for( int i = 0; i != m_characters.size(); ++i ) {
@@ -66,16 +68,18 @@ void String3D::Update( float delta ) {
 }
 
 void String3D::Initialize() {
-	AddNamedProperty(std::string("Text"), (std::string*)&m_string );
-	AddNamedProperty(std::string("X Position"), (float*)&m_position.x );
-	AddNamedProperty(std::string("Y Position"), (float*)&m_position.y );
-	AddNamedProperty(std::string("Z Position"), (float*)&m_position.z );
-	AddNamedProperty(std::string("X Rotation"), (float*)&m_rotation.x );
-	AddNamedProperty(std::string("Y Rotation"), (float*)&m_rotation.y );
-	AddNamedProperty(std::string("Z Rotation"), (float*)&m_rotation.z );
-	/*AddNamedProperty(std::string("Red"), (int*)&m_colour.r );
-	AddNamedProperty(std::string("Green"), (int*)&m_colour.g );
-	AddNamedProperty(std::string("Blue"), (int*)&m_colour.b );*/
+	AddNamedProperty("Text", (std::string*)&m_string );
+	AddNamedProperty("X Position", (float*)&m_position.x );
+	AddNamedProperty("Y Position", (float*)&m_position.y );
+	AddNamedProperty("Z Position", (float*)&m_position.z );
+	AddNamedProperty("X Rotation", (float*)&m_rotation.x );
+	AddNamedProperty("Y Rotation", (float*)&m_rotation.y );
+	AddNamedProperty("Z Rotation", (float*)&m_rotation.z );
+	AddNamedProperty("Scale", (float*)&m_scale);
+
+	AddNamedProperty(std::string("Red"), (unsigned char*)&m_colour.r );
+	AddNamedProperty(std::string("Green"), (unsigned char*)&m_colour.g );
+	AddNamedProperty(std::string("Blue"), (unsigned char*)&m_colour.b );
 }
 
 void String3D::PropertyAltered() {
