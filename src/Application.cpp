@@ -8,6 +8,7 @@
 
 #include "Background.h"
 #include "ui/UI_CameraInfo.h"
+#include "ui/UI_Taskbar.h"
 
 #include "glm/gtc/quaternion.hpp"
 
@@ -45,18 +46,20 @@ void Application::Initialize() {
 
 	m_entitymanager_background.AddEntity( new Background() );
 
-	/*for( int i = 0; i != 100; ++i ) {
+	for( int i = 0; i != 100; ++i ) {
+		int xspr = 50;
 		String3D *str = dynamic_cast<String3D*>(m_entitymanager.AddEntity( new String3D ));
 		str->SetString(textDump[i], &m_SDFontManager.Fetch("../media/sdf1.txt", "../media/sdf1.png"), &m_textShader_default);
-		str->m_position.x = rand()%500-250;
-		str->m_position.y = rand()%500-250;
-		str->m_position.z = rand()%500-250;
+		str->m_position.x = rand()%xspr-xspr/2;
+		str->m_position.y = rand()%xspr-xspr/2;
+		str->m_position.z = rand()%xspr-xspr/2;
 		str->m_rotation.x = rand()%360;
 		str->m_rotation.y = rand()%360;
 		str->m_rotation.z = rand()%360;
-	}*/
+	}
 
 	m_entitymanager_ui.AddEntity( new UI_CameraInfo() );
+	m_entitymanager_ui.AddEntity( new UI_Taskbar() );
 }
 
 void Application::Run() {
@@ -85,7 +88,8 @@ void Application::Logic() {
 		}
 
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F1 ) {
-			m_firstPersonCamera.AddNewKeyframe( Keyframe( m_firstPersonCamera.m_position, glm::quat_cast(m_firstPersonCamera.m_rotationMatrix), SelectedEntityId() ));
+			CreateKeyframe();
+
 		}
 
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F2 ) {
@@ -95,13 +99,11 @@ void Application::Logic() {
 		}
 
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Left ) {
-			m_firstPersonCamera.PrevKeyframe();
-			m_selectedEntityId = m_firstPersonCamera.overriddenSelectionID;
+			PreviousKeyframe();
 		}
 
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Right ) {
-			m_firstPersonCamera.NextKeyframe();
-			m_selectedEntityId = m_firstPersonCamera.overriddenSelectionID;
+			NextKeyframe();
 		}
 
 		if (event.type == sf::Event::MouseWheelMoved) {
@@ -207,4 +209,29 @@ void Application::DrawFPS() {
 
 const sf::Vector2u &Application::GetSize() {
 	return m_window.getSize();
+}
+
+void Application::PreviousKeyframe() {
+	m_firstPersonCamera.PrevKeyframe();
+	m_selectedEntityId = m_firstPersonCamera.m_overriddenSelectionID;
+}
+
+void Application::NextKeyframe() {
+	m_firstPersonCamera.NextKeyframe();
+	m_selectedEntityId = m_firstPersonCamera.m_overriddenSelectionID;
+}
+
+void Application::CreateKeyframe() {
+	m_firstPersonCamera.AddNewKeyframe(
+		Keyframe( m_firstPersonCamera.m_position,
+				  glm::quat_cast(m_firstPersonCamera.m_rotationMatrix), SelectedEntityId()
+				  ) );
+}
+
+void Application::DeleteCurrentKeyframe() {
+	if( !m_firstPersonCamera.m_keyframes.empty() ) {
+		PreviousKeyframe();
+		m_firstPersonCamera.m_keyframes.erase( std::vector<Keyframe>::iterator() + m_firstPersonCamera.m_currentKeyframe );
+		m_selectedEntityId = 0;
+	}
 }

@@ -37,7 +37,7 @@ void CameraController::ApplyCurrentKeyframe() {
 		m_previousQuaternion = glm::quat_cast(m_rotationMatrix);
 		m_currentQuaternion = m_keyframes[m_currentKeyframe].m_rotation;
 	
-		overriddenSelectionID = m_keyframes[m_currentKeyframe].m_selectedEntityID;
+		m_overriddenSelectionID = m_keyframes[m_currentKeyframe].m_selectedEntityID;
 	}
 }
 
@@ -85,7 +85,7 @@ void FirstPersonCamera::Update( float delta, Application &app ) {
 			m_position.y += zoomSpeed*m_mouseWheelDelta*m_rotationMatrix[1][2]*speed;
 			m_position.z += zoomSpeed*m_mouseWheelDelta*m_rotationMatrix[2][2]*speed;
 		} else {
-			m_rotationMatrix = glm::rotate(glm::mat4(), zoomSpeed*m_mouseWheelDelta*speed*0.3f, glm::vec3(0.0, 0.0, 1.0) ) * m_rotationMatrix;
+			m_rotationMatrix = glm::rotate(glm::mat4(), zoomSpeed*m_mouseWheelDelta*speed*3.0f, glm::vec3(0.0, 0.0, 1.0) ) * m_rotationMatrix;
 		}
 		m_mouseWheelDelta = 0;
 	}

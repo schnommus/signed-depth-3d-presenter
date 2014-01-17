@@ -23,6 +23,11 @@ public:
 
 	void Run();
 
+	void PreviousKeyframe();
+	void NextKeyframe();
+	void CreateKeyframe();
+	void DeleteCurrentKeyframe();
+
 	const sf::Vector2u &GetSize();
 
 	float Delta() const { return m_delta; }
@@ -41,6 +46,9 @@ public:
 		m_entitymanager_ui,
 		m_entitymanager_background;
 
+	// Scene camera controllers
+	FirstPersonCamera m_firstPersonCamera;
+
 private:
 	void Draw();
 
@@ -49,9 +57,6 @@ private:
 	void Logic();
 
 	void DrawFPS();
-
-	// Scene camera controllers
-	FirstPersonCamera m_firstPersonCamera;
 
 	// Some default assets
 	sf::Font m_debugFont;

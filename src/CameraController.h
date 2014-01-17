@@ -33,7 +33,7 @@ m_position(position), m_rotation(rotation), m_selectedEntityID(entID) {}
 class CameraController {
 public:
 	CameraController( sf::Vector3f position = sf::Vector3f(0, 0, 0), sf::Vector3f rotation = sf::Vector3f(0, 0, 0) )
-		: m_position(position), m_rotation(rotation), m_mouseWheelDelta(0), m_rotationLerpValue(0), m_currentKeyframe(0) { }
+		: m_position(position), m_rotation(rotation), m_mouseWheelDelta(0), m_rotationLerpValue(0), m_currentKeyframe(0), m_overriddenSelectionID(0) { }
 
 	virtual void Update( float delta, Application &app ) = 0;
 
@@ -48,16 +48,17 @@ public:
 	glm::mat4 m_rotationMatrix;
 
 	Vector3lf m_position, m_rotation;
-	unsigned int overriddenSelectionID;
+	unsigned int m_overriddenSelectionID;
 
 	int m_mouseWheelDelta;
+	int m_currentKeyframe;
+	std::vector<Keyframe> m_keyframes;
 
 protected:
 	virtual void ApplyCurrentKeyframe();
 
-	std::vector<Keyframe> m_keyframes;
 	claw::tween::tweener_group m_positionTweeners, m_rotationTweeners;
-	int m_currentKeyframe;
+	
 
 	glm::quat m_previousQuaternion, m_currentQuaternion;
 	double m_rotationLerpValue;
