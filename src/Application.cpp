@@ -45,7 +45,7 @@ void Application::Initialize() {
 
 	m_entitymanager_background.AddEntity( new Background() );
 
-	for( int i = 0; i != 100; ++i ) {
+	/*for( int i = 0; i != 100; ++i ) {
 		String3D *str = dynamic_cast<String3D*>(m_entitymanager.AddEntity( new String3D ));
 		str->SetString(textDump[i], &m_SDFontManager.Fetch("../media/sdf1.txt", "../media/sdf1.png"), &m_textShader_default);
 		str->m_position.x = rand()%500-250;
@@ -54,7 +54,7 @@ void Application::Initialize() {
 		str->m_rotation.x = rand()%360;
 		str->m_rotation.y = rand()%360;
 		str->m_rotation.z = rand()%360;
-	}
+	}*/
 
 	m_entitymanager_ui.AddEntity( new UI_CameraInfo() );
 }
@@ -86,6 +86,12 @@ void Application::Logic() {
 
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F1 ) {
 			m_firstPersonCamera.AddNewKeyframe( Keyframe( m_firstPersonCamera.m_position, glm::quat_cast(m_firstPersonCamera.m_rotationMatrix), SelectedEntityId() ));
+		}
+
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F2 ) {
+			String3D *str = dynamic_cast<String3D*>(m_entitymanager.AddEntity( new String3D ));
+			std::ostringstream oss; oss << str->Id();
+			str->SetString(std::string("SampleText") + oss.str(), &m_SDFontManager.Fetch("../media/sdf1.txt", "../media/sdf1.png"), &m_textShader_default);
 		}
 
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Left ) {
