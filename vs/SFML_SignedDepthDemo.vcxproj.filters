@@ -185,6 +185,9 @@
     <ClInclude Include="..\src\ui\UI_CameraInfo.h">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ui\UI_Taskbar.h">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\tween\easing\impl\symmetric_easing.tpp">
