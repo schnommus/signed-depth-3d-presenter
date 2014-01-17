@@ -5,7 +5,7 @@ String3D::String3D( ) {
 	m_position = sf::Vector3f(0, 0, 0);
 	m_rotation = sf::Vector3f(0, 0, 0);
 	m_colour = sf::Color::White;
-	m_scale = sf::Vector3f(0.2, 0.2, 0.2);
+	m_scale = sf::Vector3f(0.04, 0.04, 0.04);
 }
 
 void String3D::Draw() {
