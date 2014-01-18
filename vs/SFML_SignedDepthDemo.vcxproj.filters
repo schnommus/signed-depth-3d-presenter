@@ -188,6 +188,12 @@
     <ClInclude Include="..\src\ui\UI_Taskbar.h">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\UIEntity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\UIEntityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\tween\easing\impl\symmetric_easing.tpp">

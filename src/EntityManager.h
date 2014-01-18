@@ -22,7 +22,7 @@ private:
 class EntityManager {
 public:
 	EntityManager(Application *app);
-	~EntityManager();
+	virtual ~EntityManager();
 
 	void HandleSFMLEvent( sf::Event event );
 
@@ -42,7 +42,7 @@ public:
 
 	void RemoveEntityById ( unsigned int id );
 
-private:
+protected:
 	Application *m_app;
 
 	IdDispensor m_idDispensor;

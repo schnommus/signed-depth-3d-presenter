@@ -46,7 +46,7 @@ void Application::Initialize() {
 
 	m_entitymanager_background.AddEntity( new Background() );
 
-	for( int i = 0; i != 100; ++i ) {
+	/*for( int i = 0; i != 100; ++i ) {
 		int xspr = 50;
 		String3D *str = dynamic_cast<String3D*>(m_entitymanager.AddEntity( new String3D ));
 		str->SetString(textDump[i], &m_SDFontManager.Fetch("../media/sdf1.txt", "../media/sdf1.png"), &m_textShader_default);
@@ -56,7 +56,7 @@ void Application::Initialize() {
 		str->m_rotation.x = rand()%360;
 		str->m_rotation.y = rand()%360;
 		str->m_rotation.z = rand()%360;
-	}
+	}*/
 
 	m_entitymanager_ui.AddEntity( new UI_CameraInfo() );
 	m_entitymanager_ui.AddEntity( new UI_Taskbar() );
@@ -145,7 +145,7 @@ void Application::Draw() {
 
 	if(nHits > 0) {
 		m_entitymanager.GetEntityWithId(m_pickBuffer[3])->MouseOver();
-		if (sf::Mouse::isButtonPressed( sf::Mouse::Left)) {
+		if (sf::Mouse::isButtonPressed( sf::Mouse::Left) && !m_entitymanager_ui.GUI_InUse() ) {
 			m_selectedEntityId = m_pickBuffer[3];
 		}
 	} else {
@@ -230,8 +230,9 @@ void Application::CreateKeyframe() {
 
 void Application::DeleteCurrentKeyframe() {
 	if( !m_firstPersonCamera.m_keyframes.empty() ) {
+		m_firstPersonCamera.m_keyframes.erase( m_firstPersonCamera.m_keyframes.begin() + m_firstPersonCamera.m_currentKeyframe );
 		PreviousKeyframe();
-		m_firstPersonCamera.m_keyframes.erase( std::vector<Keyframe>::iterator() + m_firstPersonCamera.m_currentKeyframe );
 		m_selectedEntityId = 0;
+		
 	}
 }
