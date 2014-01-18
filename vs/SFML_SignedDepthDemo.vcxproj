@@ -62,6 +62,8 @@
     <ClInclude Include="..\src\tween\tweener.hpp" />
     <ClInclude Include="..\src\tween\tweener_group.hpp" />
     <ClInclude Include="..\src\tween\tweener_sequence.hpp" />
+    <ClInclude Include="..\src\UIEntity.h" />
+    <ClInclude Include="..\src\UIEntityManager.h" />
     <ClInclude Include="..\src\ui\UI_CameraInfo.h" />
     <ClInclude Include="..\src\ui\UI_Taskbar.h" />
   </ItemGroup>

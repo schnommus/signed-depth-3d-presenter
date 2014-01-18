@@ -1,16 +1,19 @@
 #pragma once
 
-#include "../Entity.h"
+#include "../UIEntity.h"
 #include <SFGUI/SFGUI.hpp>
 #include <SFML/Graphics.hpp>
 #include "../Application.h"
 #include <boost/lexical_cast.hpp>
 
-class UI_Taskbar : public Entity2D {
+class UI_Taskbar : public UIEntity {
 public:
 	virtual void Initialize() {
 		m_window = sfg::Window::Create();
 		m_window->SetTitle( "Taskbar" );
+
+		m_window->GetSignal(sfg::Widget::OnMouseEnter).Connect( &UI_Taskbar::MouseEnter, this );
+		m_window->GetSignal(sfg::Widget::OnMouseLeave).Connect( &UI_Taskbar::MouseLeave, this );
 
 		m_app->m_desktop.Add( m_window );
 
@@ -76,6 +79,9 @@ public:
 	}
 
 protected:
+	void MouseEnter() {m_mouseInside = true;}
+	void MouseLeave() {m_mouseInside = false;}
+
 	sfg::Window::Ptr m_window;
 	sfg::Button::Ptr m_previousKeyframeButton,
 					 m_nextKeyframeButton,

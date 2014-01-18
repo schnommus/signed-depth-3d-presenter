@@ -11,6 +11,7 @@
 #include "ResourceManager.h"
 #include "CameraController.h"
 #include "EntityManager.h"
+#include "UIEntityManager.h"
 
 #define PICK_BUFFER_SIZE 256
 #define PICK_TOL 10
@@ -43,8 +44,8 @@ public:
 
 	// Entity management classes
 	EntityManager m_entitymanager,
-		m_entitymanager_ui,
 		m_entitymanager_background;
+	UIEntityManager m_entitymanager_ui;
 
 	// Scene camera controllers
 	FirstPersonCamera m_firstPersonCamera;

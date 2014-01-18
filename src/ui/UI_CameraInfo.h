@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Entity.h"
+#include "../UIEntity.h"
 #include <SFGUI/SFGUI.hpp>
 #include <SFML/Graphics.hpp>
 #include "../Application.h"
@@ -13,16 +13,19 @@ public:
 	sfg::Widget::Ptr m_widget;
 };
 
-class UI_CameraInfo : public Entity2D {
+class UI_CameraInfo : public UIEntity {
 public:
 	virtual void Initialize() {
 		m_lastid = -1;
 
 		m_window = sfg::Window::Create();
 		m_window->SetTitle( "Entity Selector" );
+		m_window->GetSignal(sfg::Widget::OnMouseEnter).Connect( &UI_CameraInfo::MouseEnter, this );
+		m_window->GetSignal(sfg::Widget::OnMouseLeave).Connect( &UI_CameraInfo::MouseLeave, this );
 
 		m_app->m_desktop.Add( m_window );
 	}
+
 
 	virtual void Update( float delta ) {
 		if(m_app->SelectedEntityId() != m_lastid) {
@@ -51,7 +54,7 @@ public:
 		m_propertyReferences.clear();
 		m_window->RemoveAll();
 
-		m_label = sfg::Label::Create("Heyo");
+		m_label = sfg::Label::Create("DefaultProperty");
 
 		m_box = sfg::Box::Create( sfg::Box::VERTICAL, 5.0f );
 		m_box->Pack( m_label );
@@ -114,6 +117,9 @@ public:
 	}
 
 protected:
+	void MouseEnter() {m_mouseInside = true;}
+	void MouseLeave() {m_mouseInside = false;}
+
 	sfg::Label::Ptr m_label;
 	sfg::Box::Ptr m_box;
 	sfg::Window::Ptr m_window;
