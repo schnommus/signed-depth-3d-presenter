@@ -182,9 +182,6 @@
     <ClInclude Include="..\src\Background.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ui\UI_CameraInfo.h">
-      <Filter>Header Files\ui</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ui\UI_Taskbar.h">
       <Filter>Header Files\ui</Filter>
     </ClInclude>
@@ -193,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="..\src\UIEntityManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ui\UI_EntitySelector.h">
+      <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
