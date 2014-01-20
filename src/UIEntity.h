@@ -11,6 +11,7 @@ public:
 
 protected:
 	void SetupGUIUsageStates( sfg::Window::Ptr window) {
+		m_mouseInside = false;
 		window->GetSignal(sfg::Widget::OnMouseEnter).Connect( &UIEntity::MouseEnter, this );
 		window->GetSignal(sfg::Widget::OnMouseLeave).Connect( &UIEntity::MouseLeave, this );
 	}

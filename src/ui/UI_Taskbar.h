@@ -11,6 +11,7 @@ public:
 	virtual void Initialize() {
 		m_window = sfg::Window::Create();
 		m_window->SetTitle( "Taskbar" );
+		m_window->SetPosition( sf::Vector2f(400, 50) );
 
 		SetupGUIUsageStates( m_window );
 

@@ -21,6 +21,7 @@ public:
 
 		m_window = sfg::Window::Create();
 		m_window->SetTitle( "Entity Selector" );
+		m_window->SetPosition( sf::Vector2f(30, 220) );
 		
 		SetupGUIUsageStates( m_window );
 
