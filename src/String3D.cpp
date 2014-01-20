@@ -58,7 +58,7 @@ void String3D::SetString( std::string string, SDFont *font, sf::Shader *shader )
 }
 
 void String3D::Update( float delta ) {
-	if( m_app->SelectedEntityId() == this->Id() ) {
+	if( std::find( m_app->SelectedEntityIds().begin(), m_app->SelectedEntityIds().end(), this->Id() ) != m_app->SelectedEntityIds().end() ) {
 		if( m_colour.a > 240 ) m_colour.a = 253;
 		else m_colour.a += 600.0*m_app->Delta();
 	} else {

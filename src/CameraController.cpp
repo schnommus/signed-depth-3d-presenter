@@ -37,7 +37,7 @@ void CameraController::ApplyCurrentKeyframe() {
 		m_previousQuaternion = glm::quat_cast(m_rotationMatrix);
 		m_currentQuaternion = m_keyframes[m_currentKeyframe].m_rotation;
 	
-		m_overriddenSelectionID = m_keyframes[m_currentKeyframe].m_selectedEntityID;
+		m_overriddenSelectionIDs = m_keyframes[m_currentKeyframe].m_selectedEntityIDs;
 	}
 }
 
