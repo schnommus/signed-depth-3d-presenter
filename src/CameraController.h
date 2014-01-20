@@ -23,17 +23,17 @@ public:
 };
 
 struct Keyframe {
-	Keyframe( Vector3lf position, glm::quat rotation, unsigned int entID ) :
-m_position(position), m_rotation(rotation), m_selectedEntityID(entID) {}
+	Keyframe( Vector3lf position, glm::quat rotation, std::vector<unsigned int> entIDs ) :
+m_position(position), m_rotation(rotation), m_selectedEntityIDs(entIDs) {}
 	Vector3lf m_position;
 	glm::quat m_rotation;
-	unsigned int m_selectedEntityID;
+	std::vector<unsigned int> m_selectedEntityIDs;
 };
 
 class CameraController {
 public:
 	CameraController( sf::Vector3f position = sf::Vector3f(0, 0, 0), sf::Vector3f rotation = sf::Vector3f(0, 0, 0) )
-		: m_position(position), m_rotation(rotation), m_mouseWheelDelta(0), m_rotationLerpValue(0), m_currentKeyframe(0), m_overriddenSelectionID(0) { }
+		: m_position(position), m_rotation(rotation), m_mouseWheelDelta(0), m_rotationLerpValue(0), m_currentKeyframe(0) { }
 
 	virtual void Update( float delta, Application &app ) = 0;
 
@@ -48,7 +48,7 @@ public:
 	glm::mat4 m_rotationMatrix;
 
 	Vector3lf m_position, m_rotation;
-	unsigned int m_overriddenSelectionID;
+	std::vector<unsigned int> m_overriddenSelectionIDs;
 
 	int m_mouseWheelDelta;
 	int m_currentKeyframe;

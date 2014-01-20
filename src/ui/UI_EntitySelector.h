@@ -31,16 +31,17 @@ public:
 
 	virtual void Update( float delta ) {
 
-		// New entity? Recreate property form
-		if(m_app->SelectedEntityId() != m_lastid) {
-			CreateForm(); 
-		}
-
-		// But don't recreate every frame!
-		m_lastid = m_app->SelectedEntityId();
-
 		// Is there an entity selected? Go through every widget, update entities' property
-		if(m_app->SelectedEntityId() != 0) { 
+		if( !m_app->SelectedEntityIds().empty() ) { 
+
+			// New entity? Recreate property form
+			if(m_app->SelectedEntityIds()[0] != m_lastid) {
+				CreateForm(); 
+			}
+
+			// Avoid recreating property form every frame!
+			m_lastid = m_app->SelectedEntityIds()[0];
+
 			for( int i = 0; i != m_propertyReferences.size(); ++i ) {
 				PropertyReference &currentProperty = m_propertyReferences[i];
 				if( currentProperty.m_type == "string" ) {
@@ -56,7 +57,7 @@ public:
 			}
 
 			// Entity knows to re-read properties (change vertex colours etc) when this is set
-			m_app->m_entitymanager.GetEntityWithId(m_app->SelectedEntityId())->PropertyAltered();
+			m_app->m_entitymanager.GetEntityWithId(m_app->SelectedEntityIds()[0])->PropertyAltered();
 		}
 	}
 
@@ -69,12 +70,12 @@ public:
 		// Box to store all properties (vertically, in rows of horiz. boxes)
 		m_propertylist_box = sfg::Box::Create( sfg::Box::VERTICAL, 5.0f );
 
-		if( m_app->SelectedEntityId() != 0 ) {
+		if( !m_app->SelectedEntityIds().empty() ) {
 
-			Entity *e = m_app->m_entitymanager.GetEntityWithId(m_app->SelectedEntityId());
+			Entity *e = m_app->m_entitymanager.GetEntityWithId(m_app->SelectedEntityIds()[0]);
 
 			// Labels for entity ID, entity type
-			m_propertylist_box->Pack( sfg::Label::Create( std::string("ID: ") + boost::lexical_cast<std::string>( m_app->SelectedEntityId() ) ) );
+			m_propertylist_box->Pack( sfg::Label::Create( std::string("ID: ") + boost::lexical_cast<std::string>( m_app->SelectedEntityIds()[0] ) ) );
 			m_propertylist_box->Pack( sfg::Label::Create( std::string("Type: ") + std::string(typeid(*e).name()) ) );
 
 			// Now, add widgets for each property

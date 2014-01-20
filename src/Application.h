@@ -33,7 +33,7 @@ public:
 
 	float Delta() const { return m_delta; }
 
-	unsigned int SelectedEntityId() const { return m_selectedEntityId; }
+	const std::vector<unsigned int> &SelectedEntityIds() const { return m_selectedEntityIds; }
 
 	// Window, OpenGL context
 	sf::RenderWindow m_window;
@@ -74,6 +74,6 @@ private:
 	// For 3D picking operations
 	unsigned int m_pickBuffer[PICK_BUFFER_SIZE];
 
-	// (-1 if none)
-	unsigned int m_selectedEntityId;
+	// (empty if none)
+	std::vector<unsigned int> m_selectedEntityIds;
 };
