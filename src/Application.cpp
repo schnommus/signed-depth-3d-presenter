@@ -7,7 +7,7 @@
 #include <cmath>
 
 #include "Background.h"
-#include "ui/UI_CameraInfo.h"
+#include "ui/UI_EntitySelector.h"
 #include "ui/UI_Taskbar.h"
 
 #include "glm/gtc/quaternion.hpp"
@@ -58,7 +58,7 @@ void Application::Initialize() {
 		str->m_rotation.z = rand()%360;
 	}*/
 
-	m_entitymanager_ui.AddEntity( new UI_CameraInfo() );
+	m_entitymanager_ui.AddEntity( new UI_EntitySelector() );
 	m_entitymanager_ui.AddEntity( new UI_Taskbar() );
 }
 

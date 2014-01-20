@@ -12,8 +12,7 @@ public:
 		m_window = sfg::Window::Create();
 		m_window->SetTitle( "Taskbar" );
 
-		m_window->GetSignal(sfg::Widget::OnMouseEnter).Connect( &UI_Taskbar::MouseEnter, this );
-		m_window->GetSignal(sfg::Widget::OnMouseLeave).Connect( &UI_Taskbar::MouseLeave, this );
+		SetupGUIUsageStates( m_window );
 
 		m_app->m_desktop.Add( m_window );
 
@@ -79,9 +78,6 @@ public:
 	}
 
 protected:
-	void MouseEnter() {m_mouseInside = true;}
-	void MouseLeave() {m_mouseInside = false;}
-
 	sfg::Window::Ptr m_window;
 	sfg::Button::Ptr m_previousKeyframeButton,
 					 m_nextKeyframeButton,
