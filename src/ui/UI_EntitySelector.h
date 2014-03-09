@@ -18,6 +18,7 @@ class UI_EntitySelector : public UIEntity {
 public:
 	virtual void Initialize() {
 		m_lastid = -1; // Signifies last entity selected = nonexistant
+		m_lastsize = -1;
 
 		m_window = sfg::Window::Create();
 		m_window->SetTitle( "Entity Selector" );
@@ -31,28 +32,51 @@ public:
 
 	virtual void Update( float delta ) {
 
+		// New entity? Recreate property form
+		if(m_app->SelectedEntityIds().size() != m_lastsize ) {
+				CreateForm();
+		}
+
+		m_lastsize = m_app->SelectedEntityIds().size();
+
+
 		// Is there an entity selected? Go through every widget, update entities' property
 		if( !m_app->SelectedEntityIds().empty() ) { 
 
-			// New entity? Recreate property form
 			if(m_app->SelectedEntityIds()[0] != m_lastid) {
-				CreateForm(); 
+				CreateForm();
 			}
 
 			// Avoid recreating property form every frame!
 			m_lastid = m_app->SelectedEntityIds()[0];
 
-			for( int i = 0; i != m_propertyReferences.size(); ++i ) {
-				PropertyReference &currentProperty = m_propertyReferences[i];
-				if( currentProperty.m_type == "string" ) {
-					sfg::Entry *field = dynamic_cast<sfg::Entry*>(currentProperty.m_widget.get());
-					*boost::any_cast<std::string*>(currentProperty.m_target) = field->GetText();
-				} else if ( currentProperty.m_type == "float" ) {
-					sfg::SpinButton *spin = dynamic_cast<sfg::SpinButton*>(currentProperty.m_widget.get());
-					*boost::any_cast<float*>(currentProperty.m_target) = spin->GetValue();
-				} else if ( currentProperty.m_type == "int" ) {
-					sfg::SpinButton *spin = dynamic_cast<sfg::SpinButton*>(currentProperty.m_widget.get());
-					*boost::any_cast<unsigned char*>(currentProperty.m_target) = (unsigned char)spin->GetValue();
+			if( sf::Keyboard::isKeyPressed(sf::Keyboard::M) ) {
+				for( int i = 0; i != m_propertyReferences.size(); ++i ) {
+					PropertyReference &currentProperty = m_propertyReferences[i];
+					if( currentProperty.m_type == "string" ) {
+						sfg::Entry *field = dynamic_cast<sfg::Entry*>(currentProperty.m_widget.get());
+						field->SetText(*boost::any_cast<std::string*>(currentProperty.m_target));
+					} else if ( currentProperty.m_type == "float" ) {
+						sfg::SpinButton *spin = dynamic_cast<sfg::SpinButton*>(currentProperty.m_widget.get());
+						spin->SetValue(*boost::any_cast<float*>(currentProperty.m_target));
+					} else if ( currentProperty.m_type == "int" ) {
+						sfg::SpinButton *spin = dynamic_cast<sfg::SpinButton*>(currentProperty.m_widget.get());
+						spin->SetValue(*boost::any_cast<unsigned char*>(currentProperty.m_target));
+					}
+				}
+			} else {
+				for( int i = 0; i != m_propertyReferences.size(); ++i ) {
+					PropertyReference &currentProperty = m_propertyReferences[i];
+					if( currentProperty.m_type == "string" ) {
+						sfg::Entry *field = dynamic_cast<sfg::Entry*>(currentProperty.m_widget.get());
+						*boost::any_cast<std::string*>(currentProperty.m_target) = field->GetText();
+					} else if ( currentProperty.m_type == "float" ) {
+						sfg::SpinButton *spin = dynamic_cast<sfg::SpinButton*>(currentProperty.m_widget.get());
+						*boost::any_cast<float*>(currentProperty.m_target) = spin->GetValue();
+					} else if ( currentProperty.m_type == "int" ) {
+						sfg::SpinButton *spin = dynamic_cast<sfg::SpinButton*>(currentProperty.m_widget.get());
+						*boost::any_cast<unsigned char*>(currentProperty.m_target) = (unsigned char)spin->GetValue();
+					}
 				}
 			}
 
@@ -70,7 +94,7 @@ public:
 		// Box to store all properties (vertically, in rows of horiz. boxes)
 		m_propertylist_box = sfg::Box::Create( sfg::Box::VERTICAL, 5.0f );
 
-		if( !m_app->SelectedEntityIds().empty() ) {
+		if( m_app->SelectedEntityIds().size() == 1 ) {
 
 			Entity *e = m_app->m_entitymanager.GetEntityWithId(m_app->SelectedEntityIds()[0]);
 
@@ -130,6 +154,8 @@ public:
 				// Add the horizontal property to the vertical list of rows
 				m_propertylist_box->Pack(property_box);
 			}
+		} else if (m_app->SelectedEntityIds().size() > 1 ) {
+			m_propertylist_box->Pack( sfg::Label::Create( "Multiple entities selected." ) );
 		} else {
 			m_propertylist_box->Pack( sfg::Label::Create( "No entity selected." ) );
 		}
@@ -143,6 +169,7 @@ protected:
 	sfg::Box::Ptr m_propertylist_box;
 	sfg::Window::Ptr m_window;
 	unsigned int m_lastid;
+	unsigned int m_lastsize;
 
 	std::vector<PropertyReference> m_propertyReferences;
 };

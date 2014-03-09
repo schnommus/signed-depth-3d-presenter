@@ -149,7 +149,9 @@ void Application::Draw() {
 			if( !sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) ) {
 				m_selectedEntityIds.clear();
 			}
-			m_selectedEntityIds.push_back(m_pickBuffer[3]);
+			if( std::find(m_selectedEntityIds.begin(), m_selectedEntityIds.end(), m_pickBuffer[3]) == m_selectedEntityIds.end() ) {
+				m_selectedEntityIds.push_back(m_pickBuffer[3]);
+			}
 		}
 	} else {
 		if (sf::Mouse::isButtonPressed( sf::Mouse::Left) && !m_entitymanager_ui.GUI_InUse()  ) {
